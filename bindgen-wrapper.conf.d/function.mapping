@@ -1,0 +1,8 @@
+pmem_memcpy_ memcpy
+pmem_memmove_ memmove
+pmem_memset_ memset
+pmemblk_ block
+pmemlog_ log
+pmempool_ pool
+rpmem_ rpmem
+pmem_ pmem
