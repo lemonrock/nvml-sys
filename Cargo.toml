@@ -5,7 +5,7 @@
 [package]
 name = "nvml-sys"
 description = "nvml-sys"
-keywords = ["NVML", "pmem", "libpmem", "persisten memory"]
+keywords = ["NVML", "pmem", "libpmem", "persistent", "memory"]
 license = "MIT"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
 documentation = "https://github.com/lemonrock/nvml-sys/blob/master/README.md"
