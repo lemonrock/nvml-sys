@@ -6,3 +6,13 @@ pmemlog_ log
 pmempool_ pool
 rpmem_ rpmem
 pmem_ pmem
+pmemobj_tx_ obj_tx
+pmemobj_rwlock_ obj_rwlock
+pmemobj_root_ obj_root
+pmemobj_pool_ obj_pool
+pmemobj_mutex_ obj_mutex
+pmemobj_list_ obj_list
+pmemobj_ctl_ obj_ctl
+pmemobj_cond_ pmemobj_cond
+_pobj_debug_notice obj
+pmemobj_ obj

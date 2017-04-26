@@ -3,5 +3,6 @@
 
 include!("bindgen/opaques/pmemblk.rs");
 include!("bindgen/opaques/pmemlog.rs");
+include!("bindgen/opaques/pmemobjpool.rs");
 include!("bindgen/opaques/pmempool_check_ctx.rs");
 include!("bindgen/opaques/rpmem_pool.rs");

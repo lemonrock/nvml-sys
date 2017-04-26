@@ -3,7 +3,21 @@
 
 pub const LIBPMEMBLK_H: c_int = 1;
 pub const LIBPMEMLOG_H: c_int = 1;
+pub const LIBPMEMOBJ_ATOMIC_BASE_H: c_int = 1;
+pub const LIBPMEMOBJ_ATOMIC_H: c_int = 1;
+pub const LIBPMEMOBJ_BASE_H: c_int = 1;
+pub const LIBPMEMOBJ_CTL_H: c_int = 1;
 pub const LIBPMEMOBJ_H: c_int = 1;
+pub const LIBPMEMOBJ_ITERATOR_BASE_H: c_int = 1;
+pub const LIBPMEMOBJ_ITERATOR_H: c_int = 1;
+pub const LIBPMEMOBJ_LISTS_ATOMIC_BASE_H: c_int = 1;
+pub const LIBPMEMOBJ_LISTS_ATOMIC_H: c_int = 1;
+pub const LIBPMEMOBJ_POOL_BASE_H: c_int = 1;
+pub const LIBPMEMOBJ_POOL_H: c_int = 1;
+pub const LIBPMEMOBJ_THREAD_H: c_int = 1;
+pub const LIBPMEMOBJ_TX_BASE_H: c_int = 1;
+pub const LIBPMEMOBJ_TX_H: c_int = 1;
+pub const LIBPMEMOBJ_TYPES_H: c_int = 1;
 pub const LIBPMEMPOOL_H: c_int = 1;
 pub const LIBPMEM_H: c_int = 1;
 pub const LIBRPMEM_H: c_int = 1;

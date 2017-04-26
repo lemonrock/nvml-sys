@@ -3,5 +3,9 @@
 
 include!("bindgen/types/PMEMblkpool.rs");
 include!("bindgen/types/PMEMlogpool.rs");
+include!("bindgen/types/PMEMobjpool.rs");
+include!("bindgen/types/PMEMoid.rs");
 include!("bindgen/types/PMEMpoolcheck.rs");
 include!("bindgen/types/RPMEMpool.rs");
+include!("bindgen/types/pmemobj_constr.rs");
+include!("bindgen/types/pmemobj_tx_callback.rs");

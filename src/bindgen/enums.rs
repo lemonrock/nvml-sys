@@ -4,3 +4,6 @@
 include!("bindgen/enums/pmempool_check_msg_type.rs");
 include!("bindgen/enums/pmempool_check_result.rs");
 include!("bindgen/enums/pmempool_pool_type.rs");
+include!("bindgen/enums/pobj_tx_lock.rs");
+include!("bindgen/enums/pobj_tx_param.rs");
+include!("bindgen/enums/pobj_tx_stage.rs");
