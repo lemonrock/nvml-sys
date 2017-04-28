@@ -3,8 +3,8 @@
 
 extern "C"
 {
-	pub fn pmemobj_list_insert(pop: *mut PMEMobjpool, pe_offset: size_t, head: *mut c_void, dest: PMEMoid, before: c_int, oid: PMEMoid) -> c_int;
-	pub fn pmemobj_list_insert_new(pop: *mut PMEMobjpool, pe_offset: size_t, head: *mut c_void, dest: PMEMoid, before: c_int, size: size_t, type_num: uint64_t, constructor: pmemobj_constr, arg: *mut c_void) -> PMEMoid;
-	pub fn pmemobj_list_move(pop: *mut PMEMobjpool, pe_old_offset: size_t, head_old: *mut c_void, pe_new_offset: size_t, head_new: *mut c_void, dest: PMEMoid, before: c_int, oid: PMEMoid) -> c_int;
-	pub fn pmemobj_list_remove(pop: *mut PMEMobjpool, pe_offset: size_t, head: *mut c_void, oid: PMEMoid, free: c_int) -> c_int;
+	pub fn pmemobj_list_insert(pop: *mut PMEMobjpool, pe_offset: usize, head: *mut c_void, dest: PMEMoid, before: c_int, oid: PMEMoid) -> c_int;
+	pub fn pmemobj_list_insert_new(pop: *mut PMEMobjpool, pe_offset: usize, head: *mut c_void, dest: PMEMoid, before: c_int, size: usize, type_num: u64, constructor: pmemobj_constr, arg: *mut c_void) -> PMEMoid;
+	pub fn pmemobj_list_move(pop: *mut PMEMobjpool, pe_old_offset: usize, head_old: *mut c_void, pe_new_offset: usize, head_new: *mut c_void, dest: PMEMoid, before: c_int, oid: PMEMoid) -> c_int;
+	pub fn pmemobj_list_remove(pop: *mut PMEMobjpool, pe_offset: usize, head: *mut c_void, oid: PMEMoid, free: c_int) -> c_int;
 }

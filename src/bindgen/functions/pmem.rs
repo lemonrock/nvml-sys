@@ -6,11 +6,11 @@ extern "C"
 	pub fn pmem_check_version(major_required: c_uint, minor_required: c_uint) -> *const c_char;
 	pub fn pmem_drain();
 	pub fn pmem_errormsg() -> *const c_char;
-	pub fn pmem_flush(addr: *const c_void, len: size_t);
+	pub fn pmem_flush(addr: *const c_void, len: usize);
 	pub fn pmem_has_hw_drain() -> c_int;
-	pub fn pmem_is_pmem(addr: *const c_void, len: size_t) -> c_int;
-	pub fn pmem_map_file(path: *const c_char, len: size_t, flags: c_int, mode: mode_t, mapped_lenp: *mut size_t, is_pmemp: *mut c_int) -> *mut c_void;
-	pub fn pmem_msync(addr: *const c_void, len: size_t) -> c_int;
-	pub fn pmem_persist(addr: *const c_void, len: size_t);
-	pub fn pmem_unmap(addr: *mut c_void, len: size_t) -> c_int;
+	pub fn pmem_is_pmem(addr: *const c_void, len: usize) -> c_int;
+	pub fn pmem_map_file(path: *const c_char, len: usize, flags: c_int, mode: mode_t, mapped_lenp: *mut usize, is_pmemp: *mut c_int) -> *mut c_void;
+	pub fn pmem_msync(addr: *const c_void, len: usize) -> c_int;
+	pub fn pmem_persist(addr: *const c_void, len: usize);
+	pub fn pmem_unmap(addr: *mut c_void, len: usize) -> c_int;
 }

@@ -2,19 +2,5 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 #[repr(C)]
-#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct _pobj_pcache
-{
-	pub pop: *mut PMEMobjpool,
-	pub uuid_lo: uint64_t,
-	pub invalidate: c_int,
-}
-
-impl Default for _pobj_pcache
-{
-	#[inline(always)]
-	fn default() -> Self
-	{
-		unsafe { zeroed() }
-	}
-}
+#[derive(Debug, Copy, Clone)]
+pub struct pmemlog([u8; 0]);

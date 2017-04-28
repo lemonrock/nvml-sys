@@ -14,5 +14,5 @@ link_kind='static-nobundle'
 
 final_chance_to_tweak()
 {
-	sed -i -e '/use ::core::clone::Clone;/d' "$outputFolderPath"/lib.rs
+	sed -i -e 's/__jmp_buf_tag/jmp_buf/g' "$outputFolderPath"/functions/obj_tx.rs
 }

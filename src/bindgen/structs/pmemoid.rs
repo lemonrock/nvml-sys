@@ -2,18 +2,18 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 #[repr(C)]
-#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Default, Copy)]
 pub struct pmemoid
 {
-	pub pool_uuid_lo: uint64_t,
-	pub off: uint64_t,
+	pub pool_uuid_lo: u64,
+	pub off: u64,
 }
 
-impl Default for pmemoid
+impl Clone for pmemoid
 {
 	#[inline(always)]
-	fn default() -> Self
+	fn clone(&self) -> Self
 	{
-		unsafe { zeroed() }
+		*self
 	}
 }

@@ -3,6 +3,6 @@
 
 extern "C"
 {
-	pub fn pmemobj_root_construct(pop: *mut PMEMobjpool, size: size_t, constructor: pmemobj_constr, arg: *mut c_void) -> PMEMoid;
-	pub fn pmemobj_root_size(pop: *mut PMEMobjpool) -> size_t;
+	pub fn pmemobj_root_construct(pop: *mut PMEMobjpool, size: usize, constructor: pmemobj_constr, arg: *mut c_void) -> PMEMoid;
+	pub fn pmemobj_root_size(pop: *mut PMEMobjpool) -> usize;
 }

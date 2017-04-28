@@ -2,13 +2,22 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 #[repr(C)]
-#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Copy)]
 pub struct pmempool_check_argsU
 {
 	pub path: *const c_char,
 	pub backup_path: *const c_char,
 	pub pool_type: pmempool_pool_type,
 	pub flags: c_int,
+}
+
+impl Clone for pmempool_check_argsU
+{
+	#[inline(always)]
+	fn clone(&self) -> Self
+	{
+		*self
+	}
 }
 
 impl Default for pmempool_check_argsU

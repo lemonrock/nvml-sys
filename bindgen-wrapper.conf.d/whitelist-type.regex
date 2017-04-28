@@ -1,0 +1,5 @@
+pmem.*
+rpmem.*
+PMEM.*
+pobj_.*
+RPMEM.*

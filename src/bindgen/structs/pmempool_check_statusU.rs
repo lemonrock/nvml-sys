@@ -2,18 +2,9 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 #[repr(C)]
-#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Copy)]
 pub struct pmempool_check_statusU
 {
 	pub type_: pmempool_check_msg_type,
-	pub str: pmempool_check_statusU_AnonymousStruct_str,
-}
-
-impl Default for pmempool_check_statusU
-{
-	#[inline(always)]
-	fn default() -> Self
-	{
-		unsafe { zeroed() }
-	}
+	pub str: pmempool_check_statusU__bindgen_ty_1,
 }

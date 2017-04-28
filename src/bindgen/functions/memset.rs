@@ -3,6 +3,6 @@
 
 extern "C"
 {
-	pub fn pmem_memset_nodrain(pmemdest: *mut c_void, c: c_int, len: size_t) -> *mut c_void;
-	pub fn pmem_memset_persist(pmemdest: *mut c_void, c: c_int, len: size_t) -> *mut c_void;
+	pub fn pmem_memset_nodrain(pmemdest: *mut c_void, c: c_int, len: usize) -> *mut c_void;
+	pub fn pmem_memset_persist(pmemdest: *mut c_void, c: c_int, len: usize) -> *mut c_void;
 }

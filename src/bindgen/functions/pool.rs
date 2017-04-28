@@ -5,7 +5,7 @@ extern "C"
 {
 	pub fn pmempool_check(ppc: *mut PMEMpoolcheck) -> *mut pmempool_check_statusU;
 	pub fn pmempool_check_end(ppc: *mut PMEMpoolcheck) -> pmempool_check_result;
-	pub fn pmempool_check_init(args: *mut pmempool_check_argsU, args_size: size_t) -> *mut PMEMpoolcheck;
+	pub fn pmempool_check_init(args: *mut pmempool_check_argsU, args_size: usize) -> *mut PMEMpoolcheck;
 	pub fn pmempool_check_version(major_required: c_uint, minor_required: c_uint) -> *const c_char;
 	pub fn pmempool_errormsg() -> *const c_char;
 	pub fn pmempool_rm(path: *const c_char, flags: c_int) -> c_int;

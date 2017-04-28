@@ -14,5 +14,4 @@ pmemobj_mutex_ obj_mutex
 pmemobj_list_ obj_list
 pmemobj_ctl_ obj_ctl
 pmemobj_cond_ pmemobj_cond
-_pobj_debug_notice obj
 pmemobj_ obj

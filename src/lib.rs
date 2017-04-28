@@ -5,6 +5,7 @@
 #![allow(non_camel_case_types)]
 #![no_std]
 #![feature(static_nobundle)]
+#![feature(untagged_unions)]
 
 
 include!("bindgen/lib.rs");
