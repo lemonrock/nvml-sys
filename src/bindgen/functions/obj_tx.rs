@@ -7,7 +7,7 @@ extern "C"
 	pub fn pmemobj_tx_add_range(oid: PMEMoid, off: u64, size: usize) -> c_int;
 	pub fn pmemobj_tx_add_range_direct(ptr: *const c_void, size: usize) -> c_int;
 	pub fn pmemobj_tx_alloc(size: usize, type_num: u64) -> PMEMoid;
-	pub fn pmemobj_tx_begin(pop: *mut PMEMobjpool, env: *mut jmp_buf, ...) -> c_int;
+	pub fn pmemobj_tx_begin(pop: *mut PMEMobjpool, env: jmp_buf, ...) -> c_int;
 	pub fn pmemobj_tx_commit();
 	pub fn pmemobj_tx_end() -> c_int;
 	pub fn pmemobj_tx_errno() -> c_int;

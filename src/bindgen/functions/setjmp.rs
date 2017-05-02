@@ -3,5 +3,5 @@
 
 extern "C"
 {
-	pub fn setjmp(arg1: *mut __jmp_buf_tag) -> c_int;
+	pub fn setjmp(arg1: jmp_buf) -> c_int;
 }

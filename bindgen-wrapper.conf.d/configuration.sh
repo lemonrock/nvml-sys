@@ -14,5 +14,8 @@ link_kind='static-nobundle'
 
 final_chance_to_tweak()
 {
-	sed -i -e 's/__jmp_buf_tag/jmp_buf/g' "$outputFolderPath"/functions/obj_tx.rs
+	sed -i \
+		-e 's/\*mut __jmp_buf_tag/jmp_buf/g' \
+		"$outputFolderPath"/functions/obj_tx.rs \
+		"$outputFolderPath"/functions/setjmp.rs
 }
