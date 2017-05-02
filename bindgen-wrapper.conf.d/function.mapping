@@ -15,3 +15,4 @@ pmemobj_list_ obj_list
 pmemobj_ctl_ obj_ctl
 pmemobj_cond_ pmemobj_cond
 pmemobj_ obj
+setjmp setjmp

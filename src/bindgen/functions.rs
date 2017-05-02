@@ -18,3 +18,4 @@ include!("bindgen/functions/pmem.rs");
 include!("bindgen/functions/pmemobj_cond.rs");
 include!("bindgen/functions/pool.rs");
 include!("bindgen/functions/rpmem.rs");
+include!("bindgen/functions/setjmp.rs");

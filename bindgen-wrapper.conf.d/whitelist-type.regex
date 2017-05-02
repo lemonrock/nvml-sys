@@ -3,3 +3,6 @@ rpmem.*
 PMEM.*
 pobj_.*
 RPMEM.*
+jmp_buf
+__jmp_buf
+__jmp_buf_tag
