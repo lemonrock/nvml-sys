@@ -13,3 +13,7 @@ include!("bindgen/constants/RPMEM.rs");
 include!("bindgen/constants/RPMEM_POOL_HDR.rs");
 include!("bindgen/constants/RPMEM_POOL_USER.rs");
 include!("bindgen/constants/RPMEM_REMOVE.rs");
+include!("bindgen/constants/POBJ_FLAG.rs");
+include!("bindgen/constants/POBJ_XALLOC.rs");
+include!("bindgen/constants/POBJ_XADD.rs");
+include!("bindgen/constants/PMEMOBJ_MAX.rs");

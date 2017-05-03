@@ -119,7 +119,7 @@ compile_nvml_prepareForMacOSX()
 	_compile_nvml_prepareForMacOSX_brewInstall libelf
 	_compile_nvml_prepareForMacOSX_brewInstall coreutils
 	_compile_nvml_prepareForMacOSX_brewInstall FiloSottile/musl-cross/musl-cross
-	
+
 	_compile_nvml_prepareForMacOSX_brewInstall pkg-config
 	_compile_nvml_prepareForMacOSX_brewInstall grep
 	_compile_nvml_prepareForMacOSX_brewInstall autoconf@2.69
@@ -201,7 +201,7 @@ compile_nvml_platformSpecificPreparation()
 			compile_nvml_ensureRequiredBinariesArePresent brew
 
 			export PATH="$(brew --prefix coreutils)"/libexec/gnubin:"$(brew --prefix gnu-sed)"/libexec/gnubin:"$PATH"
-			
+
 			ln -s /usr/local/bin/ggrep "$additionalPath"/grep
 
 			muslIncludeFolderPath="$(brew --prefix musl-cross)"/libexec/x86_64-linux-musl/include
@@ -286,11 +286,11 @@ compile_nvml_make()
 	unset LDFLAGS
 	unset CPPFLAGS
 	unset CPP
-	
+
 	# libfabric
-	
+
 	cd "$temporaryFolderPath" 1>/dev/null 2>/dev/null
-		make -j "$numberOfMakeJobs" OBJCOPY="${compilerPrefix}"objcopy 1>&2
+		make -j "$numberOfMakeJobs" OBJCOPY="${compilerPrefix}"objcopy EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE" 1>&2
 		make -j "$numberOfMakeJobs" install prefix=/usr DESTDIR="$temporaryFolderPath" 1>&2
 	cd - 1>/dev/null 2>/dev/null
 }
@@ -304,9 +304,9 @@ compile_nvml_main()
 {
 	local configureHost='x86_64-linux-musl'
 	local compilerPrefix="${configureHost}"-
-	
+
 	compile_nvml_parseCommandLine "$@"
-	
+
 	local programFolderPath
 	local homeFolderPath
 	local configurationFolderPath
@@ -314,7 +314,7 @@ compile_nvml_main()
 
 	local temporaryFolderPath
 	compile_nvml_createTemporaryFolder
-	
+
 	local additionalPath="$temporaryFolderPath"/PATH
 	compile_nvml_createTemporaryBinariesPath
 
@@ -322,19 +322,19 @@ compile_nvml_main()
 	local muslIncludeFolderPath
 	local numberOfMakeJobs
 	compile_nvml_platformSpecificPreparation
-	
+
 	compile_nvml_makeCopyToAlter
-	
+
 	compile_nvml_fixHardcodedFileNameBugs
 	compile_nvml_fixMuslBugs
 	compile_nvml_fixJemallocForCrossCompiling
 	compile_nvml_fixWarningsToNotBeErrors
 	compile_nvml_fixDoNotCompileBenchmarks
-	
+
 	compile_nvml_make
-	
+
 	compile_nvml_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfabricIsMissing
-	
+
 	printf '\n\n\nFINISHED\n\n\n' 1>&2
 }
 

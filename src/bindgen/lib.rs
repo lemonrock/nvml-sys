@@ -17,6 +17,7 @@ use ::libc::c_void;
 
 use ::libc::iovec;
 use ::libc::mode_t;
+use ::libc::size_t;
 use ::libc::timespec;
 use ::libc::wchar_t;
 

@@ -9,6 +9,7 @@ extern "C"
 	pub fn pmemobj_check_version(major_required: c_uint, minor_required: c_uint) -> *const c_char;
 	pub fn pmemobj_close(pop: *mut PMEMobjpool);
 	pub fn pmemobj_create(path: *const c_char, layout: *const c_char, poolsize: usize, mode: mode_t) -> *mut PMEMobjpool;
+	pub fn pmemobj_direct(oid: PMEMoid) -> *mut c_void;
 	pub fn pmemobj_drain(pop: *mut PMEMobjpool);
 	pub fn pmemobj_errormsg() -> *const c_char;
 	pub fn pmemobj_first(pop: *mut PMEMobjpool) -> PMEMoid;
