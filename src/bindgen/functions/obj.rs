@@ -22,7 +22,6 @@ extern "C"
 	pub fn pmemobj_open(path: *const c_char, layout: *const c_char) -> *mut PMEMobjpool;
 	pub fn pmemobj_persist(pop: *mut PMEMobjpool, addr: *const c_void, len: usize);
 	pub fn pmemobj_realloc(pop: *mut PMEMobjpool, oidp: *mut PMEMoid, size: usize, type_num: u64) -> c_int;
-	pub fn pmemobj_root(pop: *mut PMEMobjpool, size: usize) -> PMEMoid;
 	pub fn pmemobj_set_funcs(malloc_func: Option<unsafe extern "C" fn(size: usize) -> *mut c_void>, free_func: Option<unsafe extern "C" fn(ptr: *mut c_void)>, realloc_func: Option<unsafe extern "C" fn(ptr: *mut c_void, size: usize) -> *mut c_void>, strdup_func: Option<unsafe extern "C" fn(s: *const c_char) -> *mut c_char>);
 	pub fn pmemobj_strdup(pop: *mut PMEMobjpool, oidp: *mut PMEMoid, s: *const c_char, type_num: u64) -> c_int;
 	pub fn pmemobj_type_num(oid: PMEMoid) -> u64;
