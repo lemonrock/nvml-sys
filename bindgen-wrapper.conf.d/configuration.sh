@@ -19,24 +19,29 @@ final_chance_to_tweak()
 		"$outputFolderPath"/functions/obj_tx.rs \
 		"$outputFolderPath"/functions/setjmp.rs
 
-	cat >"$outputFolderPath"/constants/POBJ_FLAG.rs <<-EOF
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/POBJ_FLAG.rs
+	cat >>"$outputFolderPath"/constants/POBJ_FLAG.rs <<-EOF
 		const POBJ_FLAG_ZERO: u64 = 1 << 0;
 		const POBJ_FLAG_NO_FLUSH: u64 = 1 << 0;
 	EOF
 
-	cat >"$outputFolderPath"/constants/POBJ_XALLOC.rs <<-EOF
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/POBJ_XALLOC.rs
+	cat >>"$outputFolderPath"/constants/POBJ_XALLOC.rs <<-EOF
 		pub const POBJ_XALLOC_ZERO: u64 = POBJ_FLAG_ZERO;
 		pub const POBJ_XALLOC_NO_FLUSH: u64 = POBJ_FLAG_NO_FLUSH;
 		pub const POBJ_XALLOC_VALID_FLAGS: u64 = (POBJ_XALLOC_ZERO | POBJ_XALLOC_NO_FLUSH);
 	EOF
 
-	cat >"$outputFolderPath"/constants/POBJ_XADD.rs <<-EOF
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/POBJ_XADD.rs
+	cat >>"$outputFolderPath"/constants/POBJ_XADD.rs <<-EOF
 		pub const POBJ_XADD_NO_FLUSH: u64 = POBJ_FLAG_NO_FLUSH;
 		pub const POBJ_XADD_VALID_FLAGS: u64 = POBJ_XADD_NO_FLUSH;
 	EOF
 
-	cat >"$outputFolderPath"/constants/PMEMOBJ_MAX.rs <<-EOF
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/PMEMOBJ_MAX.rs
+	cat >>"$outputFolderPath"/constants/PMEMOBJ_MAX.rs <<-EOF
 		pub const PMEMOBJ_MAX_ALLOC_SIZE: size_t = 0x3FFDFFFC0;
+		pub const PMEMOBJ_MAX_LAYOUT: size_t = 1024;
 	EOF
 
 	cat >>"$outputFolderPath"/constants.rs <<-EOF
