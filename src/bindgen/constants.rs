@@ -17,3 +17,7 @@ include!("bindgen/constants/POBJ_FLAG.rs");
 include!("bindgen/constants/POBJ_XALLOC.rs");
 include!("bindgen/constants/POBJ_XADD.rs");
 include!("bindgen/constants/PMEMOBJ_MAX.rs");
+include!("bindgen/constants/TX_DEFAULT.rs");
+include!("bindgen/constants/PMEMBLK_MIN.rs");
+include!("bindgen/constants/PMEMOBJ_MIN.rs");
+include!("bindgen/constants/PMEMLOG_MIN.rs");

@@ -44,10 +44,51 @@ final_chance_to_tweak()
 		pub const PMEMOBJ_MAX_LAYOUT: size_t = 1024;
 	EOF
 
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/TX_DEFAULT.rs
+	cat >>"$outputFolderPath"/constants/TX_DEFAULT.rs <<-EOF
+		// Accurate as of May 7th 2017
+		// src/libpmemobj/tx.c
+		pub const TX_DEFAULT_RANGE_CACHE_SIZE: c_longlong = 1 << 15;
+
+		// Accurate as of May 7th 2017
+		// src/libpmemobj/tx.c
+		pub const TX_DEFAULT_RANGE_CACHE_THRESHOLD: c_longlong = 1 << 12;
+	EOF
+
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/PMEMBLK_MIN.rs
+	cat >>"$outputFolderPath"/constants/PMEMBLK_MIN.rs <<-EOF
+		// Accurate as of May 7th 2017
+		pub const PMEMBLK_MIN_BLK: size_t = 512;
+
+		// Accurate as of May 7th 2017
+		// 16MB + 4KB (minimum BTT size + mmap alignment)
+		#[cfg(unix)] pub const PMEMBLK_MIN_POOL: size_t = (1 << 20) * 16 + (1 << 10) * 8;
+
+		// Accurate as of May 7th 2017
+		// 16MB + 64KB (minimum BTT size + mmap alignment)
+		#[cfg(windows)] pub const PMEMBLK_MIN_POOL: size_t = (1 << 20) * 16 + (1 << 10) * 64;
+	EOF
+
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/PMEMOBJ_MIN.rs
+	cat >>"$outputFolderPath"/constants/PMEMOBJ_MIN.rs <<-EOF
+		// Accurate as of May 7th 2017
+		pub const PMEMOBJ_MIN_POOL: size_t = 1024 * 1024 * 8;
+	EOF
+
+	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/PMEMLOG_MIN.rs
+	cat >>"$outputFolderPath"/constants/PMEMOBJ_MIN.rs <<-EOF
+		// Accurate as of May 7th 2017
+		pub const PMEMLOG_MIN_POOL: size_t = 1024 * 1024 * 2;
+	EOF
+
 	cat >>"$outputFolderPath"/constants.rs <<-EOF
 		include!("bindgen/constants/POBJ_FLAG.rs");
 		include!("bindgen/constants/POBJ_XALLOC.rs");
 		include!("bindgen/constants/POBJ_XADD.rs");
 		include!("bindgen/constants/PMEMOBJ_MAX.rs");
+		include!("bindgen/constants/TX_DEFAULT.rs");
+		include!("bindgen/constants/PMEMBLK_MIN.rs");
+		include!("bindgen/constants/PMEMOBJ_MIN.rs");
+		include!("bindgen/constants/PMEMLOG_MIN.rs");
 	EOF
 }
