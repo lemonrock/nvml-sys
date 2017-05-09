@@ -287,6 +287,39 @@ compile_nvml_fixDynamicLibraries()
 	sed -i -e 's;DYNAMIC_LIBS += \$(LIBSDIR_DEBUG)/libpmemcommon.a;DYNAMIC_LIBS += -lpmemcommon;g' "$temporaryFolderPath"/src/tools/Makefile.inc
 }
 
+compile_nvml_unsetSomeCargoEnvironmentVariables()
+{
+	unset DEBUG
+	unset RELEASE
+	unset HOST
+	unset TARGET
+	
+	# CARGO=/path.to/cargo
+	# CARGO_CFG_DEBUG_ASSERTIONS=
+	# CARGO_CFG_TARGET_ARCH=x86_64
+	# CARGO_CFG_TARGET_ENDIAN=little
+	# CARGO_CFG_TARGET_ENV=
+	# CARGO_CFG_TARGET_FAMILY=unix
+	# CARGO_CFG_TARGET_FEATURE=sse,sse2,sse3,ssse3
+	# CARGO_CFG_TARGET_HAS_ATOMIC=128,16,32,64,8,ptr
+	# CARGO_CFG_TARGET_OS=macos
+	# CARGO_CFG_TARGET_POINTER_WIDTH=64
+	# CARGO_CFG_TARGET_THREAD_LOCAL=
+	# CARGO_CFG_TARGET_VENDOR=apple
+	# CARGO_CFG_UNIX=
+	# CARGO_HOME=/path/to/HOME/.cargo
+	# CARGO_MANIFEST_DIR=/path/to/parent/folder-then/target/package/nvml-sys-0.0.2
+	# CARGO_PKG_AUTHORS=Raphael Cohn <raphael.cohn@stormmq.com>
+	# CARGO_PKG_DESCRIPTION=nvml-sys
+	# CARGO_PKG_HOMEPAGE=https://github.com/lemonrock/nvml-sys
+	# CARGO_PKG_NAME=nvml-sys
+	# CARGO_PKG_VERSION=0.0.2
+	# CARGO_PKG_VERSION_MAJOR=0
+	# CARGO_PKG_VERSION_MINOR=0
+	# CARGO_PKG_VERSION_PATCH=2
+	# CARGO_PKG_VERSION_PRE=
+}
+
 compile_nvml_make()
 {
 	export CXX="${compilerPrefix}"c++
@@ -347,7 +380,7 @@ compile_nvml_main()
 	compile_nvml_fixDoNotCompileBenchmarks
 	compile_nvml_fixDynamicLibraries
 	
-	#compile_nvml_performanceDoNotCompileDebug
+	compile_nvml_unsetSomeCargoEnvironmentVariables
 
 	compile_nvml_make
 
