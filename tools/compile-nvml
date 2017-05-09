@@ -238,7 +238,9 @@ compile_nvml_fixHardcodedFileNameBugs()
 {
 	sed -i -e 's/nm/'"$compilerPrefix"nm'/g' "$temporaryFolderPath"/utils/check-os.sh
 
-	sed -i -e 's/objcopy/'"$compilerPrefix"objcopy'/g' "$temporaryFolderPath"/src/benchmarks/Makefile
+	sed -i -e 's/objcopy/'"$compilerPrefix"objcopy'/g' \
+		"$temporaryFolderPath"/src/benchmarks/Makefile \
+		"$temporaryFolderPath"/src/common.inc
 }
 
 compile_nvml_fixMuslBugs()
@@ -251,8 +253,8 @@ compile_nvml_fixJemallocForCrossCompiling()
 	cp "$temporaryFolderPath"/src/jemalloc/jemalloc.cfg "$temporaryFolderPath"/src/jemalloc/jemalloc.cfg.orig
 	{
 		cat <<-EOF
-		--host=${configureHost}
-		--target=${configureHost}
+			--host=${configureHost}
+			--target=${configureHost}
 		EOF
 		cat "$temporaryFolderPath"/src/jemalloc/jemalloc.cfg.orig
 	} >"$temporaryFolderPath"/src/jemalloc/jemalloc.cfg
@@ -271,6 +273,11 @@ compile_nvml_fixDoNotCompileBenchmarks()
 	sed -i -e 's/ examples benchmarks//g' "$temporaryFolderPath"/src/Makefile
 }
 
+compile_nvml_fixDynamicLibraries()
+{
+	sed -i -e 's;DYNAMIC_LIBS += \$(LIBSDIR_DEBUG)/libpmemcommon.a;DYNAMIC_LIBS += -lpmemcommon;g' "$temporaryFolderPath"/src/tools/Makefile.inc
+}
+
 compile_nvml_make()
 {
 	export CXX="${compilerPrefix}"c++
@@ -281,16 +288,15 @@ compile_nvml_make()
 	export OBJCOPY="${compilerPrefix}"objcopy
 	export NM="${compilerPrefix}"nm
 	unset LIBS
+	unset OBJS
 	unset CFLAGS
 	unset CXXFLAGS
 	unset LDFLAGS
 	unset CPPFLAGS
 	unset CPP
-
-	# libfabric
-
+	
 	cd "$temporaryFolderPath" 1>/dev/null 2>/dev/null
-		make -j "$numberOfMakeJobs" OBJCOPY="${compilerPrefix}"objcopy EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE" 1>&2
+		make -j "$numberOfMakeJobs" EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE" 1>&2
 		make -j "$numberOfMakeJobs" install prefix=/usr DESTDIR="$temporaryFolderPath" 1>&2
 	cd - 1>/dev/null 2>/dev/null
 }
@@ -330,6 +336,9 @@ compile_nvml_main()
 	compile_nvml_fixJemallocForCrossCompiling
 	compile_nvml_fixWarningsToNotBeErrors
 	compile_nvml_fixDoNotCompileBenchmarks
+	compile_nvml_fixDynamicLibraries
+	
+	#compile_nvml_performanceDoNotCompileDebug
 
 	compile_nvml_make
 
