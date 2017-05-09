@@ -123,7 +123,7 @@ _build_under_cargo_reRunIfChanged()
 
 build_under_cargo_reRunIfAnyChanged()
 {
-	cd "$homeFolder" 1>/dev/null 2>/dev/null
+	cd "$CARGO_MANIFEST_DIR" 1>/dev/null 2>/dev/null
 
 		local folderOrFilePath
 		for folderOrFilePath in "$@"
@@ -138,9 +138,9 @@ build_under_cargo_reRunIfAnyChanged()
 	cd - 1>/dev/null 2>/dev/null
 }
 
-build_under_cargo_determineBearsslRootFolderPath()
+build_under_cargo_determineNvmlRootFolderPath()
 {
-	nvmlRootFolderPath="$homeFolder"/compile-nvml.conf.d/temporary
+	nvmlRootFolderPath="$CARGO_MANIFEST_DIR"/compile-nvml.conf.d/temporary
 		
 	if [ ! -d "$nvmlRootFolderPath" ]; then
 		needsCompilation='true'
@@ -150,12 +150,12 @@ build_under_cargo_determineBearsslRootFolderPath()
 build_under_cargo_compileIfRequired()
 {
 	if $needsCompilation; then
-		"$homeFolder"/tools/compile-nvml
+		"$CARGO_MANIFEST_DIR"/tools/compile-nvml
 	fi
 }
 
 # This is extremely brittle, mostly because of bindgen being brittle
-build_under_cargo_generatingRustBindingsToBearsslIfRquired()
+build_under_cargo_generatingRustBindingsToNvmlIfRquired()
 {
 	local rebuildBindings='false'
 	
@@ -167,7 +167,7 @@ build_under_cargo_generatingRustBindingsToBearsslIfRquired()
 	
 	if $rebuildBindings; then
 		rm -rf "$rustBindingsFolderPath"
-		"$homeFolder"/tools/bindgen-wrapper/bindgen-wrapper
+		"$CARGO_MANIFEST_DIR"/tools/bindgen-wrapper/bindgen-wrapper
 	fi
 }
 
@@ -201,11 +201,11 @@ build_under_cargo_steps()
 {	
 	local nvmlRootFolderPath
 	local needsCompilation='false'
-	build_under_cargo_determineBearsslRootFolderPath
+	build_under_cargo_determineNvmlRootFolderPath
 	
 	local nvmlLibFolderPath="$nvmlRootFolderPath"/usr/lib
 	local nvmlIncludeFolderPath="$nvmlRootFolderPath"/usr/include
-	local srcFolderPath="$homeFolder"/src
+	local srcFolderPath="$CARGO_MANIFEST_DIR"/src
 	local rustBindingsFolderPath="$srcFolderPath"/bindgen
 	local copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath="$srcFolderPath"/include
 	
@@ -213,7 +213,7 @@ build_under_cargo_steps()
 	
 	build_under_cargo_copyHeadersToKnownLocationForEmbeddedCCodeInRust
 	
-	build_under_cargo_generatingRustBindingsToBearsslIfRquired
+	build_under_cargo_generatingRustBindingsToNvmlIfRquired
 
 	build_under_cargo_outputCargoKeyValuePairs
 }
@@ -248,17 +248,20 @@ build_under_cargo_main()
 		
 	esac
 	
-	local programPath="$(_program_path_find)"
-	cd "$programPath"/.. 1>/dev/null 2>/dev/null
-		local homeFolder="$(pwd)"
-	cd - 1>/dev/null 2>/dev/null
-	
-	if [ -z "{CARGO_MANIFEST_DIR+defined}" ]; then
-		:
+	if [ -n "${CARGO_MANIFEST_DIR+set}" ]; then
+		printf 'build-under-cargo:%s\n' "Building with CARGO_MANIFEST_DIR '$CARGO_MANIFEST_DIR'" 1>&2
 	else
+		local programPath="$(_program_path_find)"
+		cd "$programPath"/.. 1>/dev/null 2>/dev/null
+			local homeFolder="$(pwd)"
+		cd - 1>/dev/null 2>/dev/null
+		
+		printf 'build-under-cargo:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$homeFolder'" 1>&2
 		export CARGO_MANIFEST_DIR="$homeFolder"
-		printf 'build-under-cargo:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$CARGO_MANIFEST_DIR'" 1>&2
 	fi
+
+	printf 'build-under-cargo:%s\n' "Environment variables follow:-" 1>&2
+	env | sort 1>&2
 	
 	build_under_cargo_steps
 }

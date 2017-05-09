@@ -89,6 +89,7 @@ recreate_bindings_main()
 	
 	cargo clean
 	rm -rf .cargo/target
+	rm -rf target
 	
 	tools/build-under-cargo
 	

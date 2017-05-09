@@ -157,15 +157,24 @@ compile_nvml_parseCommandLine()
 	esac
 }
 
+compile_nvml_setCargoManifestDir()
+{	
+	if [ -n "${CARGO_MANIFEST_DIR+set}" ]; then
+		printf 'compile-nvml:%s\n' "Building with CARGO_MANIFEST_DIR '$CARGO_MANIFEST_DIR'" 1>&2
+	else
+		local programPath="$(_program_path_find)"
+		cd "$programPath"/.. 1>/dev/null 2>/dev/null
+			local homeFolder="$(pwd)"
+		cd - 1>/dev/null 2>/dev/null
+		
+		printf 'compile-nvml:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$homeFolder'" 1>&2
+		export CARGO_MANIFEST_DIR="$homeFolder"
+	fi
+}
+
 compile_nvml_findFolderPaths()
 {
-	programFolderPath="$(_program_path_find)"
-
-	cd "$programFolderPath"/.. 1>/dev/null 2>/dev/null
-		homeFolderPath="$(pwd)"
-	cd - 1>/dev/null 2>/dev/null
-
-	configurationFolderPath="$homeFolderPath"/compile-nvml.conf.d
+	configurationFolderPath="$CARGO_MANIFEST_DIR"/compile-nvml.conf.d
 }
 
 compile_nvml_createTemporaryFolder()
@@ -231,7 +240,7 @@ compile_nvml_platformSpecificPreparation()
 
 compile_nvml_makeCopyToAlter()
 {
-	rsync --archive --quiet --exclude=.git "$homeFolderPath"/lib/nvml/ "$temporaryFolderPath"/
+	rsync --archive --quiet --exclude=.git "$CARGO_MANIFEST_DIR"/lib/nvml/ "$temporaryFolderPath"/
 }
 
 compile_nvml_fixHardcodedFileNameBugs()
@@ -313,8 +322,8 @@ compile_nvml_main()
 
 	compile_nvml_parseCommandLine "$@"
 
-	local programFolderPath
-	local homeFolderPath
+	compile_nvml_setCargoManifestDir
+	
 	local configurationFolderPath
 	compile_nvml_findFolderPaths
 
