@@ -74,15 +74,15 @@ _program_path_find()
     fi
 }
 
-compile_nvml_fail()
+compile_pmdk_fail()
 {
 	local message="$1"
 
-	printf 'compile-nvml:FAIL:%s\n' "$message" 1>&2
+	printf 'compile-pmdk:FAIL:%s\n' "$message" 1>&2
 	exit 1
 }
 
-compile_nvml_ensureRequiredBinariesArePresent()
+compile_pmdk_ensureRequiredBinariesArePresent()
 {
 	local reason="$1"
 	shift 1
@@ -92,19 +92,19 @@ compile_nvml_ensureRequiredBinariesArePresent()
 	for binary in "$@"
 	do
 		if ! command -v "$binary" 1>/dev/null 2>/dev/null; then
-			printf 'compile-nvml:%s\n' "The binary '$binary' needs to be in the path" 1>&2
+			printf 'compile-pmdk:%s\n' "The binary '$binary' needs to be in the path" 1>&2
 			missing=true
 		fi
 	done
 
 	if $missing; then
-		compile_nvml_fail "Please make sure that the missing binaries are installed because '$reason'"
+		compile_pmdk_fail "Please make sure that the missing binaries are installed because '$reason'"
 	fi
 }
 
-_compile_nvml_prepareForMacOSX_brewInstall()
+_compile_pmdk_prepareForMacOSX_brewInstall()
 {
-	compile_nvml_ensureRequiredBinariesArePresent brew
+	compile_pmdk_ensureRequiredBinariesArePresent brew
 
 	local packageName="$1"
 	if ! brew ls --versions "$packageName" 1>/dev/null 2>/dev/null; then
@@ -112,20 +112,20 @@ _compile_nvml_prepareForMacOSX_brewInstall()
 	fi
 }
 
-compile_nvml_prepareForMacOSX()
+compile_pmdk_prepareForMacOSX()
 {
-	_compile_nvml_prepareForMacOSX_brewInstall gnu-sed
-	_compile_nvml_prepareForMacOSX_brewInstall make
-	_compile_nvml_prepareForMacOSX_brewInstall libelf
-	_compile_nvml_prepareForMacOSX_brewInstall coreutils
-	_compile_nvml_prepareForMacOSX_brewInstall FiloSottile/musl-cross/musl-cross
+	_compile_pmdk_prepareForMacOSX_brewInstall gnu-sed
+	_compile_pmdk_prepareForMacOSX_brewInstall make
+	_compile_pmdk_prepareForMacOSX_brewInstall libelf
+	_compile_pmdk_prepareForMacOSX_brewInstall coreutils
+	_compile_pmdk_prepareForMacOSX_brewInstall FiloSottile/musl-cross/musl-cross
 
-	_compile_nvml_prepareForMacOSX_brewInstall pkg-config
-	_compile_nvml_prepareForMacOSX_brewInstall grep
-	_compile_nvml_prepareForMacOSX_brewInstall autoconf@2.69
+	_compile_pmdk_prepareForMacOSX_brewInstall pkg-config
+	_compile_pmdk_prepareForMacOSX_brewInstall grep
+	_compile_pmdk_prepareForMacOSX_brewInstall autoconf@2.69
 }
 
-compile_nvml_parseCommandLine()
+compile_pmdk_parseCommandLine()
 {
 	case "$#" in
 
@@ -137,63 +137,63 @@ compile_nvml_parseCommandLine()
 			case "$1" in
 
 				-h|--help)
-					printf './compile-nvml\n'
-					printf './compile-nvml -h|--help\n'
+					printf './compile-pmdk\n'
+					printf './compile-pmdk -h|--help\n'
 					printf 'Pass the environment variable NUM_JOBS to control the number of make jobs\n'
 					exit 0
 				;;
 
 				*)
-					compile_nvml_fail "Does not take any arguments"
+					compile_pmdk_fail "Does not take any arguments"
 				;;
 
 			esac
 		;;
 
 		*)
-			compile_nvml_fail "Does not take any arguments"
+			compile_pmdk_fail "Does not take any arguments"
 		;;
 
 	esac
 }
 
-compile_nvml_setCargoManifestDir()
+compile_pmdk_setCargoManifestDir()
 {	
 	if [ -n "${CARGO_MANIFEST_DIR+set}" ]; then
-		printf 'compile-nvml:%s\n' "Building with CARGO_MANIFEST_DIR '$CARGO_MANIFEST_DIR'" 1>&2
+		printf 'compile-pmdk:%s\n' "Building with CARGO_MANIFEST_DIR '$CARGO_MANIFEST_DIR'" 1>&2
 	else
 		local programPath="$(_program_path_find)"
 		cd "$programPath"/.. 1>/dev/null 2>/dev/null
 			local homeFolder="$(pwd)"
 		cd - 1>/dev/null 2>/dev/null
 		
-		printf 'compile-nvml:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$homeFolder'" 1>&2
+		printf 'compile-pmdk:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$homeFolder'" 1>&2
 		export CARGO_MANIFEST_DIR="$homeFolder"
 	fi
 }
 
-compile_nvml_findFolderPaths()
+compile_pmdk_findFolderPaths()
 {
-	configurationFolderPath="$CARGO_MANIFEST_DIR"/compile-nvml.conf.d
+	configurationFolderPath="$CARGO_MANIFEST_DIR"/compile-pmdk.conf.d
 }
 
-compile_nvml_createTemporaryFolder()
+compile_pmdk_createTemporaryFolder()
 {
 	temporaryFolderPath="$configurationFolderPath"/temporary
 	rm -rf "$temporaryFolderPath"
 	mkdir -m 0700 -p "$temporaryFolderPath"
 }
 
-compile_nvml_createTemporaryBinariesPath()
+compile_pmdk_createTemporaryBinariesPath()
 {
 	rm -rf "$additionalPath"
 	mkdir -m 0700 -p "$additionalPath"
 	export PATH="$additionalPath":"$PATH"
 }
 
-compile_nvml_platformSpecificPreparation()
+compile_pmdk_platformSpecificPreparation()
 {
-	compile_nvml_ensureRequiredBinariesArePresent uname
+	compile_pmdk_ensureRequiredBinariesArePresent uname
 	platform="$(uname)"
 
 	if [ -z "${NUM_JOBS+undefined}" ]; then
@@ -205,9 +205,9 @@ compile_nvml_platformSpecificPreparation()
 	case "$platform" in
 
 		Darwin)
-			compile_nvml_prepareForMacOSX
+			compile_pmdk_prepareForMacOSX
 
-			compile_nvml_ensureRequiredBinariesArePresent brew
+			compile_pmdk_ensureRequiredBinariesArePresent brew
 
 			export PATH="$(brew --prefix coreutils)"/libexec/gnubin:"$(brew --prefix gnu-sed)"/libexec/gnubin:"$PATH"
 
@@ -216,34 +216,34 @@ compile_nvml_platformSpecificPreparation()
 			muslIncludeFolderPath="$(brew --prefix musl-cross)"/libexec/x86_64-linux-musl/include
 
 			if [ $numberOfMakeJobs -eq 0 ]; then
-				compile_nvml_ensureRequiredBinariesArePresent sysctl
+				compile_pmdk_ensureRequiredBinariesArePresent sysctl
 				numberOfMakeJobs="$(sysctl -n hw.ncpu)"
 			fi
 		;;
 
 		Linux)
-			compile_nvml_ensureRequiredBinariesArePresent make sed x86_64-linux-musl-gcc x86_64-linux-musl-ar rm mkdir rsync cat
+			compile_pmdk_ensureRequiredBinariesArePresent make sed x86_64-linux-musl-gcc x86_64-linux-musl-ar rm mkdir rsync cat
 			muslIncludeFolderPath='/usr/include'
 
 			if [ $numberOfMakeJobs -eq 0 ]; then
-				compile_nvml_ensureRequiredBinariesArePresent grep
+				compile_pmdk_ensureRequiredBinariesArePresent grep
 				numberOfMakeJobs="$(grep -c '^processor' /proc/cpuinfo)"
 			fi
 		;;
 
 		*)
-			compile_nvml_fail "Only Darwin (Mac OS X) and Linux (specifically, Alpine Linux) are supported at this time"
+			compile_pmdk_fail "Only Darwin (Mac OS X) and Linux (specifically, Alpine Linux) are supported at this time"
 		;;
 
 	esac
 }
 
-compile_nvml_makeCopyToAlter()
+compile_pmdk_makeCopyToAlter()
 {
-	rsync --archive --quiet --exclude=.git "$CARGO_MANIFEST_DIR"/lib/nvml/ "$temporaryFolderPath"/
+	rsync --archive --quiet --exclude=.git "$CARGO_MANIFEST_DIR"/lib/pmdk/ "$temporaryFolderPath"/
 }
 
-compile_nvml_fixHardcodedFileNameBugs()
+compile_pmdk_fixHardcodedFileNameBugs()
 {
 	sed -i -e 's/nm/'"$compilerPrefix"nm'/g' "$temporaryFolderPath"/utils/check-os.sh
 
@@ -252,12 +252,12 @@ compile_nvml_fixHardcodedFileNameBugs()
 		"$temporaryFolderPath"/src/common.inc
 }
 
-compile_nvml_fixMuslBugs()
+compile_pmdk_fixMuslBugs()
 {
 	sed -i -e 's/#include <stddef.h>/#include <stddef.h>\n#include <limits.h>/g' "$temporaryFolderPath"/src/common/file.h
 }
 
-compile_nvml_fixJemallocForCrossCompiling()
+compile_pmdk_fixJemallocForCrossCompiling()
 {
 	cp "$temporaryFolderPath"/src/jemalloc/jemalloc.cfg "$temporaryFolderPath"/src/jemalloc/jemalloc.cfg.orig
 	{
@@ -269,7 +269,7 @@ compile_nvml_fixJemallocForCrossCompiling()
 	} >"$temporaryFolderPath"/src/jemalloc/jemalloc.cfg
 }
 
-compile_nvml_fixWarningsToNotBeErrors()
+compile_pmdk_fixWarningsToNotBeErrors()
 {
 	sed -i \
 		-e '/-Werror/d' \
@@ -277,50 +277,25 @@ compile_nvml_fixWarningsToNotBeErrors()
 		"$temporaryFolderPath"/src/tools/Makefile.inc
 }
 
-compile_nvml_fixDoNotCompileBenchmarks()
+compile_pmdk_fixDoNotCompileBenchmarks()
 {
 	sed -i -e 's/ examples benchmarks//g' "$temporaryFolderPath"/src/Makefile
 }
 
-compile_nvml_fixDynamicLibraries()
+compile_pmdk_fixDynamicLibraries()
 {
 	sed -i -e 's;DYNAMIC_LIBS += \$(LIBSDIR_DEBUG)/libpmemcommon.a;DYNAMIC_LIBS += -lpmemcommon;g' "$temporaryFolderPath"/src/tools/Makefile.inc
 }
 
-compile_nvml_unsetSomeCargoEnvironmentVariables()
+compile_pmdk_unsetSomeCargoEnvironmentVariables()
 {
 	unset DEBUG
 	unset RELEASE
 	unset HOST
 	unset TARGET
-	
-	# CARGO=/path.to/cargo
-	# CARGO_CFG_DEBUG_ASSERTIONS=
-	# CARGO_CFG_TARGET_ARCH=x86_64
-	# CARGO_CFG_TARGET_ENDIAN=little
-	# CARGO_CFG_TARGET_ENV=
-	# CARGO_CFG_TARGET_FAMILY=unix
-	# CARGO_CFG_TARGET_FEATURE=sse,sse2,sse3,ssse3
-	# CARGO_CFG_TARGET_HAS_ATOMIC=128,16,32,64,8,ptr
-	# CARGO_CFG_TARGET_OS=macos
-	# CARGO_CFG_TARGET_POINTER_WIDTH=64
-	# CARGO_CFG_TARGET_THREAD_LOCAL=
-	# CARGO_CFG_TARGET_VENDOR=apple
-	# CARGO_CFG_UNIX=
-	# CARGO_HOME=/path/to/HOME/.cargo
-	# CARGO_MANIFEST_DIR=/path/to/parent/folder-then/target/package/nvml-sys-0.0.2
-	# CARGO_PKG_AUTHORS=Raphael Cohn <raphael.cohn@stormmq.com>
-	# CARGO_PKG_DESCRIPTION=nvml-sys
-	# CARGO_PKG_HOMEPAGE=https://github.com/lemonrock/nvml-sys
-	# CARGO_PKG_NAME=nvml-sys
-	# CARGO_PKG_VERSION=0.0.2
-	# CARGO_PKG_VERSION_MAJOR=0
-	# CARGO_PKG_VERSION_MINOR=0
-	# CARGO_PKG_VERSION_PATCH=2
-	# CARGO_PKG_VERSION_PRE=
 }
 
-compile_nvml_make()
+compile_pmdk_make()
 {
 	export CXX="${compilerPrefix}"c++
 	export OBJCOPY="${compilerPrefix}"objcopy
@@ -343,50 +318,50 @@ compile_nvml_make()
 	cd - 1>/dev/null 2>/dev/null
 }
 
-compile_nvml_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfabricIsMissing()
+compile_pmdk_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfabricIsMissing()
 {
 	cp "$temporaryFolderPath"/src/include/librpmem.h "$temporaryFolderPath"/usr/include
 }
 
-compile_nvml_main()
+compile_pmdk_main()
 {
 	local configureHost='x86_64-linux-musl'
 	local compilerPrefix="${configureHost}"-
 
-	compile_nvml_parseCommandLine "$@"
+	compile_pmdk_parseCommandLine "$@"
 
-	compile_nvml_setCargoManifestDir
+	compile_pmdk_setCargoManifestDir
 	
 	local configurationFolderPath
-	compile_nvml_findFolderPaths
+	compile_pmdk_findFolderPaths
 
 	local temporaryFolderPath
-	compile_nvml_createTemporaryFolder
+	compile_pmdk_createTemporaryFolder
 
 	local additionalPath="$temporaryFolderPath"/PATH
-	compile_nvml_createTemporaryBinariesPath
+	compile_pmdk_createTemporaryBinariesPath
 
 	local platform
 	local muslIncludeFolderPath
 	local numberOfMakeJobs
-	compile_nvml_platformSpecificPreparation
+	compile_pmdk_platformSpecificPreparation
 
-	compile_nvml_makeCopyToAlter
+	compile_pmdk_makeCopyToAlter
 
-	compile_nvml_fixHardcodedFileNameBugs
-	compile_nvml_fixMuslBugs
-	compile_nvml_fixJemallocForCrossCompiling
-	compile_nvml_fixWarningsToNotBeErrors
-	compile_nvml_fixDoNotCompileBenchmarks
-	compile_nvml_fixDynamicLibraries
+	compile_pmdk_fixHardcodedFileNameBugs
+	compile_pmdk_fixMuslBugs
+	compile_pmdk_fixJemallocForCrossCompiling
+	compile_pmdk_fixWarningsToNotBeErrors
+	compile_pmdk_fixDoNotCompileBenchmarks
+	compile_pmdk_fixDynamicLibraries
 	
-	compile_nvml_unsetSomeCargoEnvironmentVariables
+	compile_pmdk_unsetSomeCargoEnvironmentVariables
 
-	compile_nvml_make
+	compile_pmdk_make
 
-	compile_nvml_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfabricIsMissing
+	compile_pmdk_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfabricIsMissing
 
 	printf '\n\n\nFINISHED\n\n\n' 1>&2
 }
 
-compile_nvml_main "$@"
+compile_pmdk_main "$@"

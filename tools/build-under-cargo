@@ -138,11 +138,11 @@ build_under_cargo_reRunIfAnyChanged()
 	cd - 1>/dev/null 2>/dev/null
 }
 
-build_under_cargo_determineNvmlRootFolderPath()
+build_under_cargo_determinePmdkRootFolderPath()
 {
-	nvmlRootFolderPath="$CARGO_MANIFEST_DIR"/compile-nvml.conf.d/temporary
+	pmdkRootFolderPath="$CARGO_MANIFEST_DIR"/compile-pmdk.conf.d/temporary
 		
-	if [ ! -d "$nvmlRootFolderPath" ]; then
+	if [ ! -d "$pmdkRootFolderPath" ]; then
 		needsCompilation='true'
 	fi
 }
@@ -150,18 +150,18 @@ build_under_cargo_determineNvmlRootFolderPath()
 build_under_cargo_compileIfRequired()
 {
 	if $needsCompilation; then
-		"$CARGO_MANIFEST_DIR"/tools/compile-nvml
+		"$CARGO_MANIFEST_DIR"/tools/compile-pmdk
 	fi
 }
 
 # This is extremely brittle, mostly because of bindgen being brittle
-build_under_cargo_generatingRustBindingsToNvmlIfRquired()
+build_under_cargo_generatingRustBindingsToPmdkIfRquired()
 {
 	local rebuildBindings='false'
 	
 	if [ ! -d "$rustBindingsFolderPath" ]; then
 		rebuildBindings='true'
-	elif ! diff "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath" "$nvmlIncludeFolderPath" 1>/dev/null 2>/dev/null; then
+	elif ! diff "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath" "$pmdkIncludeFolderPath" 1>/dev/null 2>/dev/null; then
 		rebuildBindings='true'
 	fi
 	
@@ -175,7 +175,7 @@ build_under_cargo_copyHeadersToKnownLocationForEmbeddedCCodeInRust()
 {
 	rm -rf "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"
 	mkdir -m 0700 -p "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"
-	rsync --quiet --archive "$nvmlIncludeFolderPath"/ "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"/
+	rsync --quiet --archive "$pmdkIncludeFolderPath"/ "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"/
 }
 
 build_under_cargo_outputCargoKeyValuePairs()
@@ -189,22 +189,22 @@ build_under_cargo_outputCargoKeyValuePairs()
 	#printf 'cargo:rustc-link-lib=static-nobundle=libvmemmalloc\n'
 	
 	# Search path
-	printf 'cargo:rustc-link-search=native=%s\n' "$nvmlLibFolderPath"
+	printf 'cargo:rustc-link-search=native=%s\n' "$pmdkLibFolderPath"
 	
 	# Not used by us, but useful for downstream potentially
-	printf 'cargo:root=%s\n' "$nvmlRootFolderPath"
-	printf 'cargo:include=%s\n' "$nvmlIncludeFolderPath"
-	printf 'cargo:libdir=%s\n' "$nvmlLibFolderPath"
+	printf 'cargo:root=%s\n' "$pmdkRootFolderPath"
+	printf 'cargo:include=%s\n' "$pmdkIncludeFolderPath"
+	printf 'cargo:libdir=%s\n' "$pmdkLibFolderPath"
 }
 
 build_under_cargo_steps()
 {	
-	local nvmlRootFolderPath
+	local pmdkRootFolderPath
 	local needsCompilation='false'
-	build_under_cargo_determineNvmlRootFolderPath
+	build_under_cargo_determinePmdkRootFolderPath
 	
-	local nvmlLibFolderPath="$nvmlRootFolderPath"/usr/lib
-	local nvmlIncludeFolderPath="$nvmlRootFolderPath"/usr/include
+	local pmdkLibFolderPath="$pmdkRootFolderPath"/usr/lib
+	local pmdkIncludeFolderPath="$pmdkRootFolderPath"/usr/include
 	local srcFolderPath="$CARGO_MANIFEST_DIR"/src
 	local rustBindingsFolderPath="$srcFolderPath"/bindgen
 	local copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath="$srcFolderPath"/include
@@ -213,7 +213,7 @@ build_under_cargo_steps()
 	
 	build_under_cargo_copyHeadersToKnownLocationForEmbeddedCCodeInRust
 	
-	build_under_cargo_generatingRustBindingsToNvmlIfRquired
+	build_under_cargo_generatingRustBindingsToPmdkIfRquired
 
 	build_under_cargo_outputCargoKeyValuePairs
 }
@@ -230,8 +230,8 @@ build_under_cargo_main()
 			case "$1" in
 				
 				-h|--help)
-					printf './build\n'
-					printf './build -h|--help\n'
+					printf './build-under-cargo\n'
+					printf './build-under-cargo -h|--help\n'
 					exit 0
 				;;
 				

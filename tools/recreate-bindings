@@ -85,7 +85,7 @@ recreate_bindings_main()
 	rm -rf src/bindgen
 	rm -rf src/include
 	rm -rf tools/bindgen/wrapper/temporary
-	rm -rf compile-nvml.conf.d/temporary
+	rm -rf compile-pmdk.conf.d/temporary
 	
 	cargo clean
 	rm -rf .cargo/target
