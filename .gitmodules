@@ -2,8 +2,8 @@
 	path = .cargo
 	url = https://github.com/lemonrock/.cargo.git
 [submodule "lib/nvml"]
-	path = lib/nvml
-	url = https://github.com/pmem/nvml.git
+	path = lib/pmdk
+	url = https://github.com/pmem/pmdk.git
 [submodule "tools/bindgen-wrapper"]
 	path = tools/bindgen-wrapper
 	url = https://github.com/lemonrock/bindgen-wrapper.git
