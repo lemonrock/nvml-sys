@@ -186,6 +186,7 @@ build_under_cargo_outputCargoKeyValuePairs()
 {
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmem\n'
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmemblk\n'
+	printf 'cargo:rustc-link-lib=static-nobundle=libpmemcto\n'
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmemlog\n'
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmemobj\n'
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmempool\n'

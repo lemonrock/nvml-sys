@@ -7,3 +7,6 @@
 [submodule "tools/bindgen-wrapper"]
 	path = tools/bindgen-wrapper
 	url = https://github.com/lemonrock/bindgen-wrapper.git
+[submodule "lib/musl-fts"]
+	path = lib/musl-fts
+	url = https://github.com/voidlinux/musl-fts

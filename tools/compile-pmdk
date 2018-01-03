@@ -123,6 +123,7 @@ compile_pmdk_prepareForMacOSX()
 	_compile_pmdk_prepareForMacOSX_brewInstall pkg-config
 	_compile_pmdk_prepareForMacOSX_brewInstall grep
 	_compile_pmdk_prepareForMacOSX_brewInstall autoconf@2.69
+	_compile_pmdk_prepareForMacOSX_brewInstall libtool
 }
 
 compile_pmdk_parseCommandLine()
@@ -219,6 +220,9 @@ compile_pmdk_platformSpecificPreparation()
 
 			ln -s /usr/local/bin/ggrep "$additionalPath"/grep
 
+			ln -s /usr/local/bin/glibtool "$additionalPath"/libtool
+			ln -s /usr/local/bin/glibtoolize "$additionalPath"/libtoolize
+			
 			muslIncludeFolderPath="$(brew --prefix musl-cross)"/libexec/x86_64-linux-musl/include
 
 			if [ $numberOfMakeJobs -eq 0 ]; then
@@ -249,6 +253,32 @@ compile_pmdk_makeCopyToAlter()
 	rsync --archive --quiet --exclude=.git "$CARGO_MANIFEST_DIR"/lib/pmdk/ "$temporaryFolderPath"/
 }
 
+compile_pmdk_unsetSomeCargoEnvironmentVariables()
+{
+	unset DEBUG
+	unset RELEASE
+	unset HOST
+	unset TARGET
+}
+
+compile_pmdk_setCompilerEnvironmentVariables()
+{
+	export CXX="${compilerPrefix}"c++
+	export OBJCOPY="${compilerPrefix}"objcopy
+	export CC="${compilerPrefix}"cc
+	export LD="${compilerPrefix}"ld
+	export AR="${compilerPrefix}"ar
+	export OBJCOPY="${compilerPrefix}"objcopy
+	export NM="${compilerPrefix}"nm
+	unset LIBS
+	unset OBJS
+	unset CFLAGS
+	unset CXXFLAGS
+	unset LDFLAGS
+	unset CPPFLAGS
+	unset CPP
+}
+
 compile_pmdk_fixHardcodedFileNameBugs()
 {
 	sed -i -e 's/nm/'"$compilerPrefix"nm'/g' "$temporaryFolderPath"/utils/check-os.sh
@@ -258,9 +288,51 @@ compile_pmdk_fixHardcodedFileNameBugs()
 		"$temporaryFolderPath"/src/common.inc
 }
 
+compile_pmdk_buildMuslFtsSupport()
+{
+	useMuslFts='true'
+	muslFtsFolderPath="$temporaryFolderPath"/musl-fts
+	
+	rsync --archive --quiet --exclude=.git "$CARGO_MANIFEST_DIR"/lib/musl-fts/ "$muslFtsFolderPath"/
+	
+	cd "$muslFtsFolderPath" 1>/dev/null 2>/dev/null
+		
+		mkdir -m 0700 -p 'm4'
+		./bootstrap.sh
+		./configure --host "$configureHost"
+		make -j "$numberOfMakeJobs"
+		
+	cd - 1>/dev/null 2>/dev/null
+}
+
 compile_pmdk_fixMuslBugs()
 {
 	sed -i -e 's/#include <stddef.h>/#include <stddef.h>\n#include <limits.h>/g' "$temporaryFolderPath"/src/common/file.h
+}
+
+compile_pmdk_fixMuslLacksSecureGetEnv()
+{
+	mv "$temporaryFolderPath"/src/common/os_linux.c "$temporaryFolderPath"/src/common/os_linux.c.orig
+	cat >"$temporaryFolderPath"/src/common/os_linux.c <<-EOF
+		#include <stdlib.h>
+		#include <unistd.h>
+	
+		static char * secure_getenv(const char *name)
+		{
+			if (issetugid() != 0)
+			{
+				return NULL;
+			}
+			
+			return getenv(name);
+		}
+	EOF
+	cat "$temporaryFolderPath"/src/common/os_linux.c.orig >>"$temporaryFolderPath"/src/common/os_linux.c
+}
+
+compile_pmdk_fixNaiveCrossCompilingBugs()
+{
+	sed -i -e 's/\$(shell uname -s | tr "\[:upper:\]" "\[:lower:\]")/linux/g' "$temporaryFolderPath"/src/common/pmemcommon.inc
 }
 
 compile_pmdk_fixJemallocForCrossCompiling()
@@ -269,7 +341,6 @@ compile_pmdk_fixJemallocForCrossCompiling()
 	{
 		cat <<-EOF
 			--host=${configureHost}
-			--target=${configureHost}
 		EOF
 		cat "$temporaryFolderPath"/src/jemalloc/jemalloc.cfg.orig
 	} >"$temporaryFolderPath"/src/jemalloc/jemalloc.cfg
@@ -293,34 +364,22 @@ compile_pmdk_fixDynamicLibraries()
 	sed -i -e 's;DYNAMIC_LIBS += \$(LIBSDIR_DEBUG)/libpmemcommon.a;DYNAMIC_LIBS += -lpmemcommon;g' "$temporaryFolderPath"/src/tools/Makefile.inc
 }
 
-compile_pmdk_unsetSomeCargoEnvironmentVariables()
-{
-	unset DEBUG
-	unset RELEASE
-	unset HOST
-	unset TARGET
-}
-
 compile_pmdk_make()
 {
-	export CXX="${compilerPrefix}"c++
-	export OBJCOPY="${compilerPrefix}"objcopy
-	export CC="${compilerPrefix}"cc
-	export LD="${compilerPrefix}"ld
-	export AR="${compilerPrefix}"ar
-	export OBJCOPY="${compilerPrefix}"objcopy
-	export NM="${compilerPrefix}"nm
-	unset LIBS
-	unset OBJS
-	unset CFLAGS
-	unset CXXFLAGS
-	unset LDFLAGS
-	unset CPPFLAGS
-	unset CPP
-	
 	cd "$temporaryFolderPath" 1>/dev/null 2>/dev/null
-		make -j "$numberOfMakeJobs" EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE" 1>&2
+
+		# EXPERIMENTAL=y
+		set -- -j "$numberOfMakeJobs"
+	
+		if $useMuslFts; then
+			set -- "$@" EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE -I${muslFtsFolderPath}" EXTRA_LDFLAGS="-L${muslFtsFolderPath}/.libs -lfts"
+		else
+			set -- "$@" EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE"
+		fi
+		make "$@"
+		
 		make -j "$numberOfMakeJobs" install prefix=/usr DESTDIR="$temporaryFolderPath" 1>&2
+		
 	cd - 1>/dev/null 2>/dev/null
 }
 
@@ -362,15 +421,24 @@ compile_pmdk_main()
 	compile_pmdk_platformSpecificPreparation
 
 	compile_pmdk_makeCopyToAlter
+	
+	compile_pmdk_unsetSomeCargoEnvironmentVariables
+	compile_pmdk_setCompilerEnvironmentVariables
 
 	compile_pmdk_fixHardcodedFileNameBugs
+	
+	local useMuslFts
+	local muslFtsFolderPath
+	compile_pmdk_buildMuslFtsSupport
+	
 	compile_pmdk_fixMuslBugs
+	compile_pmdk_fixMuslLacksSecureGetEnv
+	
+	compile_pmdk_fixNaiveCrossCompilingBugs
 	compile_pmdk_fixJemallocForCrossCompiling
 	compile_pmdk_fixWarningsToNotBeErrors
 	compile_pmdk_fixDoNotCompileBenchmarks
 	compile_pmdk_fixDynamicLibraries
-	
-	compile_pmdk_unsetSomeCargoEnvironmentVariables
 
 	compile_pmdk_make
 
