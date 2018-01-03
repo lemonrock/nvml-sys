@@ -2,6 +2,8 @@
 
 [nvml-sys] is a rust crate that provides a low-level FFI wrapper around the Persistent Memory Devleopment Kit, [PMDK](https://pmem.io) (formerly NVML) and its libraries, including `libpmem` and `libpmemobj` amongst others.
 
+This library currently tracks version 1.3.1.
+
 Bindings are created for the following libraries:-
 
 * `libpmem`
