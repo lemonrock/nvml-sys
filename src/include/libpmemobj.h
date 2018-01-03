@@ -43,6 +43,7 @@
 #ifndef LIBPMEMOBJ_H
 #define LIBPMEMOBJ_H 1
 
+#include <libpmemobj/action.h>
 #include <libpmemobj/atomic.h>
 #include <libpmemobj/ctl.h>
 #include <libpmemobj/iterator.h>

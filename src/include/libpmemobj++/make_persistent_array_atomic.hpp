@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, Intel Corporation
+ * Copyright 2016-2017, Intel Corporation
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -47,7 +47,7 @@
 #include "libpmemobj++/detail/pexceptions.hpp"
 #include "libpmemobj/atomic_base.h"
 
-namespace nvml
+namespace pmem
 {
 
 namespace obj
@@ -127,7 +127,7 @@ make_persistent_atomic(pool_base &pool,
 template <typename T>
 void
 delete_persistent_atomic(typename detail::pp_if_array<T>::type &ptr,
-			 std::size_t N)
+			 std::size_t)
 {
 	if (ptr == nullptr)
 		return;
@@ -158,6 +158,6 @@ delete_persistent_atomic(typename detail::pp_if_size_array<T>::type &ptr)
 
 } /* namespace obj */
 
-} /* namespace nvml */
+} /* namespace pmem */
 
 #endif /* PMEMOBJ_MAKE_PERSISTENT_ARRAY_ATOMIC_HPP */

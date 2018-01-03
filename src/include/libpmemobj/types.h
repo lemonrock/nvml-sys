@@ -33,7 +33,6 @@
 /*
  * libpmemobj/types.h -- definitions of libpmemobj type-safe macros
  */
-
 #ifndef LIBPMEMOBJ_TYPES_H
 #define LIBPMEMOBJ_TYPES_H 1
 
@@ -60,6 +59,24 @@ extern "C" {
 #else /* _MSC_VER */
 
 #define TOID_ASSIGN(o, value) ((o).oid = value, (o))
+
+/*
+ * XXX - workaround for offsetof issue in VS 15.3
+ */
+#ifdef PMEMOBJ_OFFSETOF_WA
+#ifdef _CRT_USE_BUILTIN_OFFSETOF
+#undef offsetof
+#define offsetof(s, m) ((size_t)&reinterpret_cast < char const volatile& > \
+((((s *)0)->m)))
+#endif
+#else
+#ifdef _CRT_USE_BUILTIN_OFFSETOF
+#error "Invalid definition of offsetof() macro - see: \
+https://developercommunity.visualstudio.com/content/problem/96174/. \
+Please upgrade your VS, fix offsetof as described under the link or define \
+PMEMOBJ_OFFSETOF_WA to enable workaround in libpmemobj.h"
+#endif
+#endif
 
 #endif /* _MSC_VER */
 

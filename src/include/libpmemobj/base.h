@@ -47,7 +47,7 @@
 #ifdef _WIN32
 #include <pmemcompat.h>
 
-#ifndef NVML_UTF8_API
+#ifndef PMDK_UTF8_API
 #define pmemobj_check_version pmemobj_check_versionW
 #define pmemobj_errormsg pmemobj_errormsgW
 #else
@@ -67,6 +67,18 @@ extern "C" {
 typedef struct pmemobjpool PMEMobjpool;
 
 #define PMEMOBJ_MAX_ALLOC_SIZE ((size_t)0x3FFDFFFC0)
+
+/*
+ * allocation functions flags
+ */
+#define POBJ_FLAG_ZERO		(((uint64_t)1) << 0)
+#define POBJ_FLAG_NO_FLUSH	(((uint64_t)1) << 1)
+
+#define POBJ_CLASS_ID(id)	(((uint64_t)(id)) << 48)
+
+#define POBJ_XALLOC_CLASS_MASK	((((uint64_t)1 << 16) - 1) << 48)
+#define POBJ_XALLOC_ZERO	POBJ_FLAG_ZERO
+#define POBJ_XALLOC_NO_FLUSH	POBJ_FLAG_NO_FLUSH
 
 /*
  * Persistent memory object

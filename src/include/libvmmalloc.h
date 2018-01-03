@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016, Intel Corporation
+ * Copyright 2014-2017, Intel Corporation
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -46,20 +46,16 @@ extern "C" {
 #endif
 
 #define VMMALLOC_MAJOR_VERSION 1
-#define VMMALLOC_MINOR_VERSION 0
+#define VMMALLOC_MINOR_VERSION 1
 
 #include <sys/types.h>
 
 #define VMMALLOC_MIN_POOL ((size_t)(1024 * 1024 * 14)) /* min pool size: 14MB */
 
-#define VMMALLOC_OVERRIDE_ALIGNED_ALLOC
-#define VMMALLOC_OVERRIDE_VALLOC
-#define VMMALLOC_OVERRIDE_MEMALIGN
-
 /*
  * check compiler support for various function attributes
  */
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 
 #define GCC_VER (__GNUC__ * 100 + __GNUC_MINOR__)
 
@@ -87,7 +83,7 @@ extern "C" {
 #define __ATTR_ALLOC_ALIGN__(x)
 #endif
 
-#else /* clang and other compilers */
+#else /* clang, icc and other compilers */
 
 #ifndef __has_attribute
 #define __has_attribute(x) 0
@@ -133,21 +129,15 @@ extern void cfree(void *ptr);
 extern int posix_memalign(void **memptr, size_t alignment, size_t size)
 	__ATTR_NONNULL__(1);
 
-#ifdef VMMALLOC_OVERRIDE_MEMALIGN
 extern void *memalign(size_t boundary, size_t size)
 	__ATTR_MALLOC__ __ATTR_ALLOC_ALIGN__(1) __ATTR_ALLOC_SIZE__(2);
-#endif
 
-#ifdef VMMALLOC_OVERRIDE_ALIGNED_ALLOC
 extern void *aligned_alloc(size_t alignment, size_t size)
 	__ATTR_MALLOC__ __ATTR_ALLOC_ALIGN__(1) __ATTR_ALLOC_SIZE__(2);
-#endif
 
-#ifdef VMMALLOC_OVERRIDE_VALLOC
 extern void *valloc(size_t size) __ATTR_MALLOC__ __ATTR_ALLOC_SIZE__(1);
 
 extern void *pvalloc(size_t size) __ATTR_MALLOC__ __ATTR_ALLOC_SIZE__(1);
-#endif
 
 extern size_t malloc_usable_size(void *ptr);
 
