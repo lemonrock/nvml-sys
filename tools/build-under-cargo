@@ -140,8 +140,12 @@ build_under_cargo_reRunIfAnyChanged()
 
 build_under_cargo_determinePmdkRootFolderPath()
 {
-	pmdkRootFolderPath="$CARGO_MANIFEST_DIR"/compile-pmdk.conf.d/temporary
-		
+	if [ -z "${OUT_DIR+undefined}" ]; then
+		pmdkRootFolderPath="$CARGO_MANIFEST_DIR"/bindgen-wrapper.conf.d/temporary/root
+	else
+		pmdkRootFolderPath="$OUT_DIR"/root
+	fi
+	
 	if [ ! -d "$pmdkRootFolderPath" ]; then
 		needsCompilation='true'
 	fi
@@ -185,6 +189,7 @@ build_under_cargo_outputCargoKeyValuePairs()
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmemlog\n'
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmemobj\n'
 	printf 'cargo:rustc-link-lib=static-nobundle=libpmempool\n'
+	#printf 'cargo:rustc-link-lib=static-nobundle=librpmem\n'
 	#printf 'cargo:rustc-link-lib=static-nobundle=libvmem\n'
 	#printf 'cargo:rustc-link-lib=static-nobundle=libvmemmalloc\n'
 	
@@ -259,9 +264,6 @@ build_under_cargo_main()
 		printf 'build-under-cargo:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$homeFolder'" 1>&2
 		export CARGO_MANIFEST_DIR="$homeFolder"
 	fi
-
-	printf 'build-under-cargo:%s\n' "Environment variables follow:-" 1>&2
-	env | sort 1>&2
 	
 	build_under_cargo_steps
 }

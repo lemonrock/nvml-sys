@@ -22,16 +22,16 @@ use ::libc::timespec;
 use ::libc::wchar_t;
 
 
-#[link(name = "nvml", kind = "static-nobundle")]
+#[link(name = "pmdk", kind = "static-nobundle")]
 extern "C"
 {
 }
 
-include!("bindgen/constants.rs");
-include!("bindgen/enums.rs");
-include!("bindgen/functions.rs");
-include!("bindgen/statics.rs");
-include!("bindgen/structs.rs");
-include!("bindgen/types.rs");
-include!("bindgen/unions.rs");
-include!("bindgen/opaques.rs");
+include!("constants.rs");
+include!("enums.rs");
+include!("functions.rs");
+include!("statics.rs");
+include!("structs.rs");
+include!("types.rs");
+include!("unions.rs");
+include!("opaques.rs");

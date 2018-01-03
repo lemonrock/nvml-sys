@@ -3,4 +3,7 @@
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct pmemlog([u8; 0]);
+pub struct pmemlog
+{
+	_unused: [u8; 0],
+}

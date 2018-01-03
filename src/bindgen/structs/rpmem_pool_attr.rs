@@ -2,7 +2,7 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 #[repr(C)]
-#[derive(Debug, Default, Copy)]
+#[derive(Debug, Copy)]
 pub struct rpmem_pool_attr
 {
 	pub signature: [c_char; 8usize],
@@ -23,5 +23,14 @@ impl Clone for rpmem_pool_attr
 	fn clone(&self) -> Self
 	{
 		*self
+	}
+}
+
+impl Default for rpmem_pool_attr
+{
+	#[inline(always)]
+	fn default() -> Self
+	{
+		unsafe { zeroed() }
 	}
 }

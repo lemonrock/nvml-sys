@@ -2,7 +2,7 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 #[repr(C)]
-#[derive(Debug, Default, Copy)]
+#[derive(Debug, Copy)]
 pub struct __jmp_buf_tag
 {
 	pub __jb: __jmp_buf,
@@ -16,5 +16,14 @@ impl Clone for __jmp_buf_tag
 	fn clone(&self) -> Self
 	{
 		*self
+	}
+}
+
+impl Default for __jmp_buf_tag
+{
+	#[inline(always)]
+	fn default() -> Self
+	{
+		unsafe { zeroed() }
 	}
 }

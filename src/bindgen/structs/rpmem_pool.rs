@@ -3,4 +3,7 @@
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct rpmem_pool([u8; 0]);
+pub struct rpmem_pool
+{
+	_unused: [u8; 0],
+}

@@ -1,9 +1,9 @@
 // This file is part of nvml-sys. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT. No part of nvml-sys, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
-include!("bindgen/enums/pmempool_check_msg_type.rs");
-include!("bindgen/enums/pmempool_check_result.rs");
-include!("bindgen/enums/pmempool_pool_type.rs");
-include!("bindgen/enums/pobj_tx_lock.rs");
-include!("bindgen/enums/pobj_tx_param.rs");
-include!("bindgen/enums/pobj_tx_stage.rs");
+include!("enums/pmempool_check_msg_type.rs");
+include!("enums/pmempool_check_result.rs");
+include!("enums/pmempool_pool_type.rs");
+include!("enums/pobj_tx_lock.rs");
+include!("enums/pobj_tx_param.rs");
+include!("enums/pobj_tx_stage.rs");

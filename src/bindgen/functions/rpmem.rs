@@ -9,7 +9,7 @@ extern "C"
 	pub fn rpmem_errormsg() -> *const c_char;
 	pub fn rpmem_open(target: *const c_char, pool_set_name: *const c_char, pool_addr: *mut c_void, pool_size: usize, nlanes: *mut c_uint, open_attr: *mut rpmem_pool_attr) -> *mut RPMEMpool;
 	pub fn rpmem_persist(rpp: *mut RPMEMpool, offset: usize, length: usize, lane: c_uint) -> c_int;
-	pub fn rpmem_read(rpp: *mut RPMEMpool, buff: *mut c_void, offset: usize, length: usize) -> c_int;
+	pub fn rpmem_read(rpp: *mut RPMEMpool, buff: *mut c_void, offset: usize, length: usize, lane: c_uint) -> c_int;
 	pub fn rpmem_remove(target: *const c_char, pool_set: *const c_char, flags: c_int) -> c_int;
 	pub fn rpmem_set_attr(rpp: *mut RPMEMpool, attr: *const rpmem_pool_attr) -> c_int;
 }

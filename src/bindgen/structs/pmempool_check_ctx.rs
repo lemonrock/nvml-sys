@@ -3,4 +3,7 @@
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct pmempool_check_ctx([u8; 0]);
+pub struct pmempool_check_ctx
+{
+	_unused: [u8; 0],
+}

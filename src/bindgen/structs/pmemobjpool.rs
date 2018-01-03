@@ -3,4 +3,7 @@
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct pmemobjpool([u8; 0]);
+pub struct pmemobjpool
+{
+	_unused: [u8; 0],
+}

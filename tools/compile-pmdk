@@ -174,12 +174,18 @@ compile_pmdk_setCargoManifestDir()
 
 compile_pmdk_findFolderPaths()
 {
+	if [ -z "${OUT_DIR+undefined}" ]; then
+		pmdkRootFolderPath="$CARGO_MANIFEST_DIR"/bindgen-wrapper.conf.d/temporary/root
+	else
+		pmdkRootFolderPath="$OUT_DIR"/root
+	fi
+	
 	configurationFolderPath="$CARGO_MANIFEST_DIR"/compile-pmdk.conf.d
 }
 
 compile_pmdk_createTemporaryFolder()
 {
-	temporaryFolderPath="$configurationFolderPath"/temporary
+	temporaryFolderPath="$configurationFolderPath"/temporary/root
 	rm -rf "$temporaryFolderPath"
 	mkdir -m 0700 -p "$temporaryFolderPath"
 }
@@ -323,6 +329,14 @@ compile_pmdk_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfab
 	cp "$temporaryFolderPath"/src/include/librpmem.h "$temporaryFolderPath"/usr/include
 }
 
+compile_pmdk_finish()
+{
+	rm -rf "$pmdkRootFolderPath"
+	mkdir -m 0700 -p "$pmdkRootFolderPath"
+	
+	rsync -a -v "$temporaryFolderPath"/usr "$pmdkRootFolderPath"/
+}
+
 compile_pmdk_main()
 {
 	local configureHost='x86_64-linux-musl'
@@ -332,6 +346,7 @@ compile_pmdk_main()
 
 	compile_pmdk_setCargoManifestDir
 	
+	local pmdkRootFolderPath
 	local configurationFolderPath
 	compile_pmdk_findFolderPaths
 
@@ -360,8 +375,10 @@ compile_pmdk_main()
 	compile_pmdk_make
 
 	compile_pmdk_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfabricIsMissing
-
-	printf '\n\n\nFINISHED\n\n\n' 1>&2
+	
+	compile_pmdk_finish
+	
+	printf '\n\n\nFINISHED COMPILATION OF PMDK; look in bindgen-wrapper.conf.d/temporary/root\n\n\n' 1>&2
 }
 
 compile_pmdk_main "$@"

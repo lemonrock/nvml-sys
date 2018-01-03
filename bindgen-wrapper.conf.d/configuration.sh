@@ -2,14 +2,14 @@
 # Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-bindingsName='nvml'
-rootIncludeFileName='nvml.h'
+bindingsName='pmdk'
+rootIncludeFileName='pmdk.h'
 macosXHomebrewPackageNames=''
 alpineLinuxPackageNames='rsync make gcc linux-headers libunwind-dev linux-grsec-dev'
 clangAdditionalArguments='-DPMEMOBJ_DIRECT_NON_INLINE'
-headersFolderPath="$homeFolder"/compile-nvml.conf.d/temporary/usr/include
-libFolderPath="$homeFolder"/compile-nvml.conf.d/temporary/usr/lib
-link='nvml'
+headersFolderPath='usr/include'
+libFolderPath='usr/lib'
+link='pmdk'
 link_kind='static-nobundle'
 
 final_chance_to_tweak()
@@ -82,13 +82,13 @@ final_chance_to_tweak()
 	EOF
 
 	cat >>"$outputFolderPath"/constants.rs <<-EOF
-		include!("bindgen/constants/POBJ_FLAG.rs");
-		include!("bindgen/constants/POBJ_XALLOC.rs");
-		include!("bindgen/constants/POBJ_XADD.rs");
-		include!("bindgen/constants/PMEMOBJ_MAX.rs");
-		include!("bindgen/constants/TX_DEFAULT.rs");
-		include!("bindgen/constants/PMEMBLK_MIN.rs");
-		include!("bindgen/constants/PMEMOBJ_MIN.rs");
-		include!("bindgen/constants/PMEMLOG_MIN.rs");
+		include!("constants/POBJ_FLAG.rs");
+		include!("constants/POBJ_XALLOC.rs");
+		include!("constants/POBJ_XADD.rs");
+		include!("constants/PMEMOBJ_MAX.rs");
+		include!("constants/TX_DEFAULT.rs");
+		include!("constants/PMEMBLK_MIN.rs");
+		include!("constants/PMEMOBJ_MIN.rs");
+		include!("constants/PMEMLOG_MIN.rs");
 	EOF
 }

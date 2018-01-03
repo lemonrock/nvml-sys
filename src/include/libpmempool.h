@@ -166,7 +166,7 @@ enum pmempool_check_result pmempool_check_end(PMEMpoolcheck *ppc);
  * used at compile-time by passing these defines to pmempool_check_version().
  */
 #define PMEMPOOL_MAJOR_VERSION 1
-#define PMEMPOOL_MINOR_VERSION 1
+#define PMEMPOOL_MINOR_VERSION 2
 
 /*
  * check status
@@ -241,6 +241,8 @@ struct pmempool_check_statusW *pmempool_checkW(PMEMpoolcheck *ppc);
 
 /*
  * Synchronize data between replicas within a poolset.
+ *
+ * EXPERIMENTAL
  */
 #ifndef _WIN32
 int pmempool_sync(const char *poolset_file, unsigned flags);
@@ -251,6 +253,8 @@ int pmempool_syncW(const wchar_t *poolset_file, unsigned flags);
 
 /*
  * Modify internal structure of a poolset.
+ *
+ * EXPERIMENTAL
  */
 #ifndef _WIN32
 int pmempool_transform(const char *poolset_file_src,

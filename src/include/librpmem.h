@@ -31,7 +31,7 @@
  */
 
 /*
- * librpmem.h -- definitions of librpmem entry points
+ * librpmem.h -- definitions of librpmem entry points (EXPERIMENTAL)
  *
  * This library provides low-level support for remote access to persistent
  * memory utilizing RDMA-capable RNICs.
@@ -82,7 +82,8 @@ int rpmem_close(RPMEMpool *rpp);
 
 int rpmem_persist(RPMEMpool *rpp, size_t offset, size_t length,
 		unsigned lane);
-int rpmem_read(RPMEMpool *rpp, void *buff, size_t offset, size_t length);
+int rpmem_read(RPMEMpool *rpp, void *buff, size_t offset, size_t length,
+		unsigned lane);
 
 #define RPMEM_REMOVE_FORCE 0x1
 #define RPMEM_REMOVE_POOL_SET 0x2
@@ -104,6 +105,8 @@ const char *rpmem_errormsg(void);
 
 /* minimum size of a pool */
 #define RPMEM_MIN_POOL ((size_t)(1024 * 8)) /* 8 KB */
+/* minimum size of a part file */
+#define RPMEM_MIN_PART ((size_t)(1024 * 8)) /* 8 KB */
 
 #ifdef __cplusplus
 }
