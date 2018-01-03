@@ -12,7 +12,6 @@ authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
 homepage = "https://github.com/lemonrock/nvml-sys"
 repository = "https://github.com/lemonrock/nvml-sys.git"
 exclude = ["/compile-pmdk.conf.d/temporary/**/*", "/bindgen-wrapper.conf.d/temporary/**/*", "/tools/bindgen-wrapper/temporary/**/*", ".gitignore", ".gitmodules", "*.iml", "/.cargo/**/*", "/.tm_properties", "/clippy.toml", "/rustfmt.toml", "/src/bindgen/**/*"]
-#include = ["README.md", "LICENSE", "COPYRIGHT", "Cargo.toml", "rustfmt.toml", "clippy.toml", "src/build.rs", "/src/lib.rs", "lib/**/*", "tools/*", "tools/bindgen-wrapper/bindgen-wrapper", "bindgen-wrapper.conf.d/*.sh", "bindgen-wrapper.conf.d/*.mapping", "bindgen-wrapper.conf.d/*.types", "bindgen-wrapper.conf.d/*.rs", "bindgen-wrapper.conf.d/*.regex", "bindgen-wrapper.conf.d/header-overides/*", "compile-pmdk.conf.d"]
 build = "src/build.rs"
 readme = "README.md"
 publish = true
