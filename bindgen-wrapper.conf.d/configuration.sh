@@ -81,6 +81,18 @@ final_chance_to_tweak()
 		pub const PMEMLOG_MIN_POOL: size_t = 1024 * 1024 * 2;
 	EOF
 
+	cat >>"$outputFolderPath"/constants/PMEMCTO.rs <<-EOF
+		
+		// Accurate as of Jan 4th 2017
+		pub const PMEMCTO_MIN_POOL: size_t = 1024 * 1024 * 16;
+		
+		// Accurate as of Jan 4th 2017
+		pub const PMEMCTO_MIN_PART: size_t = 1024 * 1024 * 2;
+		
+		// Accurate as of Jan 4th 2017
+		pub const PMEMCTO_MAX_LAYOUT: size_t = 1024;
+	EOF
+	
 	cat >>"$outputFolderPath"/constants.rs <<-EOF
 		include!("constants/POBJ_FLAG.rs");
 		include!("constants/POBJ_XALLOC.rs");

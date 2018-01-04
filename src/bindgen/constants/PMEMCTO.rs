@@ -4,3 +4,12 @@
 
 pub const PMEMCTO_MAJOR_VERSION: c_uint = 1;
 pub const PMEMCTO_MINOR_VERSION: c_uint = 0;
+
+// Accurate as of Jan 4th 2017
+pub const PMEMCTO_MIN_POOL: size_t = 1024 * 1024 * 16;
+
+// Accurate as of Jan 4th 2017
+pub const PMEMCTO_MIN_PART: size_t = 1024 * 1024 * 2;
+
+// Accurate as of Jan 4th 2017
+pub const PMEMCTO_MAX_LAYOUT: size_t = 1024;

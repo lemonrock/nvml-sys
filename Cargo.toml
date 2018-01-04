@@ -11,11 +11,11 @@ license = "MIT"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
 homepage = "https://github.com/lemonrock/nvml-sys"
 repository = "https://github.com/lemonrock/nvml-sys.git"
-exclude = ["/compile-pmdk.conf.d/temporary/**/*", "/bindgen-wrapper.conf.d/temporary/**/*", "/tools/bindgen-wrapper/temporary/**/*", ".gitignore", ".gitmodules", "*.iml", "/.cargo/**/*", "/.tm_properties", "/clippy.toml", "/rustfmt.toml", "/src/bindgen/**/*"]
+exclude = ["/compile-pmdk.conf.d/temporary/**/*", "/bindgen-wrapper.conf.d/temporary/**/*", "/tools/bindgen-wrapper/temporary/**/*", ".gitmodules", "nvml-sys.iml", "/.cargo/**/*", "/.tm_properties", "/clippy.toml", "/rustfmt.toml", "/src/bindgen/**/*"]
 build = "src/build.rs"
 readme = "README.md"
 publish = true
-version = "0.0.4"
+version = "0.0.5"
 
 [dependencies]
 libc = "0.2"
