@@ -15,7 +15,7 @@ exclude = ["/compile-pmdk.conf.d/temporary/**/*", "/bindgen-wrapper.conf.d/tempo
 build = "src/build.rs"
 readme = "README.md"
 publish = true
-version = "0.0.5"
+version = "0.0.6"
 
 [dependencies]
 libc = "0.2"

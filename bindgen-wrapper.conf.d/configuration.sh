@@ -76,7 +76,7 @@ final_chance_to_tweak()
 	EOF
 
 	cat "$configurationFolderPath"/preamble.rs >"$outputFolderPath"/constants/PMEMLOG_MIN.rs
-	cat >>"$outputFolderPath"/constants/PMEMOBJ_MIN.rs <<-EOF
+	cat >>"$outputFolderPath"/constants/PMEMLOG_MIN.rs <<-EOF
 		// Accurate as of May 7th 2017
 		pub const PMEMLOG_MIN_POOL: size_t = 1024 * 1024 * 2;
 	EOF
