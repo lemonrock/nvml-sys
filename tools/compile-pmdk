@@ -159,7 +159,7 @@ compile_pmdk_parseCommandLine()
 }
 
 compile_pmdk_setCargoManifestDir()
-{	
+{
 	if [ -n "${CARGO_MANIFEST_DIR+set}" ]; then
 		printf 'compile-pmdk:%s\n' "Building with CARGO_MANIFEST_DIR '$CARGO_MANIFEST_DIR'" 1>&2
 	else
@@ -167,7 +167,7 @@ compile_pmdk_setCargoManifestDir()
 		cd "$programPath"/.. 1>/dev/null 2>/dev/null
 			local homeFolder="$(pwd)"
 		cd - 1>/dev/null 2>/dev/null
-		
+
 		printf 'compile-pmdk:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$homeFolder'" 1>&2
 		export CARGO_MANIFEST_DIR="$homeFolder"
 	fi
@@ -180,7 +180,7 @@ compile_pmdk_findFolderPaths()
 	else
 		pmdkRootFolderPath="$OUT_DIR"/root
 	fi
-	
+
 	configurationFolderPath="$CARGO_MANIFEST_DIR"/compile-pmdk.conf.d
 }
 
@@ -222,7 +222,7 @@ compile_pmdk_platformSpecificPreparation()
 
 			ln -s /usr/local/bin/glibtool "$additionalPath"/libtool
 			ln -s /usr/local/bin/glibtoolize "$additionalPath"/libtoolize
-			
+
 			muslIncludeFolderPath="$(brew --prefix musl-cross)"/libexec/x86_64-linux-musl/include
 
 			if [ $numberOfMakeJobs -eq 0 ]; then
@@ -292,16 +292,16 @@ compile_pmdk_buildMuslFtsSupport()
 {
 	useMuslFts='true'
 	muslFtsFolderPath="$temporaryFolderPath"/musl-fts
-	
+
 	rsync --archive --quiet --exclude=.git "$CARGO_MANIFEST_DIR"/lib/musl-fts/ "$muslFtsFolderPath"/
-	
+
 	cd "$muslFtsFolderPath" 1>/dev/null 2>/dev/null
-		
+
 		mkdir -m 0700 -p 'm4'
 		./bootstrap.sh
 		./configure --host "$configureHost"
 		make -j "$numberOfMakeJobs"
-		
+
 	cd - 1>/dev/null 2>/dev/null
 }
 
@@ -312,27 +312,27 @@ compile_pmdk_fixMuslBugs()
 
 compile_pmdk_fixMuslLacksSecureGetEnv()
 {
-	mv "$temporaryFolderPath"/src/common/os_linux.c "$temporaryFolderPath"/src/common/os_linux.c.orig
-	cat >"$temporaryFolderPath"/src/common/os_linux.c <<-EOF
+	mv "$temporaryFolderPath"/src/common/os_posix.c "$temporaryFolderPath"/src/common/os_posix.c.orig
+	cat >"$temporaryFolderPath"/src/common/os_posix.c <<-EOF
 		#include <stdlib.h>
 		#include <unistd.h>
-	
+
 		static char * secure_getenv(const char *name)
 		{
 			if (issetugid() != 0)
 			{
 				return NULL;
 			}
-			
+
 			return getenv(name);
 		}
 	EOF
-	cat "$temporaryFolderPath"/src/common/os_linux.c.orig >>"$temporaryFolderPath"/src/common/os_linux.c
+	cat "$temporaryFolderPath"/src/common/os_posix.c.orig >>"$temporaryFolderPath"/src/common/os_posix.c
 }
 
 compile_pmdk_fixNaiveCrossCompilingBugs()
 {
-	sed -i -e 's/\$(shell uname -s | tr "\[:upper:\]" "\[:lower:\]")/linux/g' "$temporaryFolderPath"/src/common/pmemcommon.inc
+	sed -i -e 's/\$(shell uname -s | tr "\[:upper:\]" "\[:lower:\]")/linux/g' "$temporaryFolderPath"/src/common.inc
 }
 
 compile_pmdk_fixJemallocForCrossCompiling()
@@ -370,16 +370,16 @@ compile_pmdk_make()
 
 		# EXPERIMENTAL=y
 		set -- -j "$numberOfMakeJobs"
-	
+
 		if $useMuslFts; then
 			set -- "$@" EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE -I${muslFtsFolderPath}" EXTRA_LDFLAGS="-L${muslFtsFolderPath}/.libs -lfts"
 		else
 			set -- "$@" EXTRA_CFLAGS="-DPMEMOBJ_DIRECT_NON_INLINE"
 		fi
 		make "$@"
-		
+
 		make -j "$numberOfMakeJobs" install prefix=/usr DESTDIR="$temporaryFolderPath" 1>&2
-		
+
 	cd - 1>/dev/null 2>/dev/null
 }
 
@@ -392,7 +392,7 @@ compile_pmdk_finish()
 {
 	rm -rf "$pmdkRootFolderPath"
 	mkdir -m 0700 -p "$pmdkRootFolderPath"
-	
+
 	rsync -a -v "$temporaryFolderPath"/usr "$pmdkRootFolderPath"/
 }
 
@@ -404,7 +404,7 @@ compile_pmdk_main()
 	compile_pmdk_parseCommandLine "$@"
 
 	compile_pmdk_setCargoManifestDir
-	
+
 	local pmdkRootFolderPath
 	local configurationFolderPath
 	compile_pmdk_findFolderPaths
@@ -421,19 +421,19 @@ compile_pmdk_main()
 	compile_pmdk_platformSpecificPreparation
 
 	compile_pmdk_makeCopyToAlter
-	
+
 	compile_pmdk_unsetSomeCargoEnvironmentVariables
 	compile_pmdk_setCompilerEnvironmentVariables
 
 	compile_pmdk_fixHardcodedFileNameBugs
-	
+
 	local useMuslFts
 	local muslFtsFolderPath
 	compile_pmdk_buildMuslFtsSupport
-	
+
 	compile_pmdk_fixMuslBugs
 	compile_pmdk_fixMuslLacksSecureGetEnv
-	
+
 	compile_pmdk_fixNaiveCrossCompilingBugs
 	compile_pmdk_fixJemallocForCrossCompiling
 	compile_pmdk_fixWarningsToNotBeErrors
@@ -443,9 +443,9 @@ compile_pmdk_main()
 	compile_pmdk_make
 
 	compile_pmdk_installRemoteMemoryHeadersEvenThoughLibrpmemIsNotBuiltBecauseLibfabricIsMissing
-	
+
 	compile_pmdk_finish
-	
+
 	printf '\n\n\nFINISHED COMPILATION OF PMDK; look in bindgen-wrapper.conf.d/temporary/root\n\n\n' 1>&2
 }
 

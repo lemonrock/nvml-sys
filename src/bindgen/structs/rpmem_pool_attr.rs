@@ -3,7 +3,6 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy)]
 pub struct rpmem_pool_attr
 {
 	pub signature: [c_char; 8usize],
@@ -16,15 +15,6 @@ pub struct rpmem_pool_attr
 	pub next_uuid: [c_uchar; 16usize],
 	pub prev_uuid: [c_uchar; 16usize],
 	pub user_flags: [c_uchar; 16usize],
-}
-
-impl Clone for rpmem_pool_attr
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
 }
 
 impl Default for rpmem_pool_attr

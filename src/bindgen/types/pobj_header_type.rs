@@ -2,11 +2,4 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum pmempool_check_msg_type
-{
-	PMEMPOOL_CHECK_MSG_TYPE_INFO = 0,
-	PMEMPOOL_CHECK_MSG_TYPE_ERROR = 1,
-	PMEMPOOL_CHECK_MSG_TYPE_QUESTION = 2,
-}
+pub type pobj_header_type = u32;

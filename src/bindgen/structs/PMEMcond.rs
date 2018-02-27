@@ -3,24 +3,16 @@
 
 
 #[repr(C)]
-#[derive(Copy)]
-pub union PMEMmutex
+pub struct PMEMcond
 {
-    pub align: c_longlong,
-    pub padding: [c_char; 64usize],
-    _bindgen_union_align: [u64; 8usize],
+	pub align: __BindgenUnionField<c_longlong>,
+	pub padding: __BindgenUnionField<[c_char; 64usize]>,
+	pub bindgen_union_field: [u64; 8usize],
 }
 
-impl Clone for PMEMmutex
+impl Default for PMEMcond
 {
-	fn clone(&self) -> Self
-	{
-		*self
-	}
-}
-
-impl Default for PMEMmutex
-{
+	#[inline(always)]
 	fn default() -> Self
 	{
 		unsafe { zeroed() }

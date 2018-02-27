@@ -5,6 +5,9 @@
 extern "C"
 {
 	pub fn pmem_check_version(major_required: c_uint, minor_required: c_uint) -> *const c_char;
+	pub fn pmem_deep_drain(addr: *const c_void, len: usize) -> c_int;
+	pub fn pmem_deep_flush(addr: *const c_void, len: usize);
+	pub fn pmem_deep_persist(addr: *const c_void, len: usize) -> c_int;
 	pub fn pmem_drain();
 	pub fn pmem_errormsg() -> *const c_char;
 	pub fn pmem_flush(addr: *const c_void, len: usize);

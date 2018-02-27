@@ -4,5 +4,3 @@
 
 // Accurate as of May 7th 2017
 pub const PMEMOBJ_MIN_POOL: size_t = 1024 * 1024 * 8;
-// Accurate as of May 7th 2017
-pub const PMEMLOG_MIN_POOL: size_t = 1024 * 1024 * 2;

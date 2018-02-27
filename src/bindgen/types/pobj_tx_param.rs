@@ -2,7 +2,4 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-include!("unions/PMEMcond.rs");
-include!("unions/PMEMmutex.rs");
-include!("unions/PMEMrwlock.rs");
-include!("unions/pobj_action__bindgen_ty_1.rs");
+pub type pobj_tx_param = u32;

@@ -3,7 +3,6 @@
 
 
 #[repr(C)]
-#[derive(Copy)]
 pub struct pobj_action
 {
 	pub type_: pobj_action_type,

@@ -2,11 +2,19 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum pobj_action_type
+#[repr(C)]
+pub struct PMEMrwlock
 {
-	POBJ_ACTION_TYPE_HEAP = 0,
-	POBJ_ACTION_TYPE_MEM = 1,
-	POBJ_MAX_ACTION_TYPE = 2,
+	pub align: __BindgenUnionField<c_longlong>,
+	pub padding: __BindgenUnionField<[c_char; 64usize]>,
+	pub bindgen_union_field: [u64; 8usize],
+}
+
+impl Default for PMEMrwlock
+{
+	#[inline(always)]
+	fn default() -> Self
+	{
+		unsafe { zeroed() }
+	}
 }

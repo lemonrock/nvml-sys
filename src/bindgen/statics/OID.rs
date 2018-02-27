@@ -4,5 +4,5 @@
 
 extern "C"
 {
-	#[link_name = "OID_NULL"] pub static OID_NULL: PMEMoid;
+	#[link_name = "\u{1}OID_NULL"] pub static mut OID_NULL: PMEMoid;
 }

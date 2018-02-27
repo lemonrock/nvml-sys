@@ -3,20 +3,10 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy)]
 pub struct pmemoid
 {
 	pub pool_uuid_lo: u64,
 	pub off: u64,
-}
-
-impl Clone for pmemoid
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
 }
 
 impl Default for pmemoid

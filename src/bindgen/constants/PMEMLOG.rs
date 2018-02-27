@@ -2,5 +2,5 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-pub const PMEMLOG_MAJOR_VERSION: c_uint = 1;
-pub const PMEMLOG_MINOR_VERSION: c_uint = 0;
+pub const PMEMLOG_MAJOR_VERSION: u32 = 1;
+pub const PMEMLOG_MINOR_VERSION: u32 = 0;

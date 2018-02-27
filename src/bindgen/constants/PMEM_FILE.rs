@@ -2,7 +2,7 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-pub const PMEM_FILE_CREATE: c_uint = 1;
-pub const PMEM_FILE_EXCL: c_uint = 2;
-pub const PMEM_FILE_SPARSE: c_uint = 4;
-pub const PMEM_FILE_TMPFILE: c_uint = 8;
+pub const PMEM_FILE_CREATE: u32 = 1;
+pub const PMEM_FILE_EXCL: u32 = 2;
+pub const PMEM_FILE_SPARSE: u32 = 4;
+pub const PMEM_FILE_TMPFILE: u32 = 8;

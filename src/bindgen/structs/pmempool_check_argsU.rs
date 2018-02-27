@@ -3,22 +3,12 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy)]
 pub struct pmempool_check_argsU
 {
 	pub path: *const c_char,
 	pub backup_path: *const c_char,
 	pub pool_type: pmempool_pool_type,
 	pub flags: c_int,
-}
-
-impl Clone for pmempool_check_argsU
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
 }
 
 impl Default for pmempool_check_argsU

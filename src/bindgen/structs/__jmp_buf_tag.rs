@@ -3,21 +3,11 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy)]
 pub struct __jmp_buf_tag
 {
 	pub __jb: __jmp_buf,
 	pub __fl: c_ulong,
 	pub __ss: [c_ulong; 16usize],
-}
-
-impl Clone for __jmp_buf_tag
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
 }
 
 impl Default for __jmp_buf_tag

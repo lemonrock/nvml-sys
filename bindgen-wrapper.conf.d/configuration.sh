@@ -6,7 +6,7 @@ bindingsName='pmdk'
 rootIncludeFileName='pmdk.h'
 macosXHomebrewPackageNames=''
 alpineLinuxPackageNames='rsync make gcc linux-headers libunwind-dev linux-grsec-dev'
-clangAdditionalArguments='-DPMEMOBJ_DIRECT_NON_INLINE'
+clangAdditionalArguments='-DPMEMOBJ_DIRECT_NON_INLINE -target x86_64-pc-linux-musl'
 headersFolderPath='usr/include'
 libFolderPath='usr/lib'
 link='pmdk'
@@ -82,17 +82,17 @@ final_chance_to_tweak()
 	EOF
 
 	cat >>"$outputFolderPath"/constants/PMEMCTO.rs <<-EOF
-		
+
 		// Accurate as of Jan 4th 2017
 		pub const PMEMCTO_MIN_POOL: size_t = 1024 * 1024 * 16;
-		
+
 		// Accurate as of Jan 4th 2017
 		pub const PMEMCTO_MIN_PART: size_t = 1024 * 1024 * 2;
-		
+
 		// Accurate as of Jan 4th 2017
 		pub const PMEMCTO_MAX_LAYOUT: size_t = 1024;
 	EOF
-	
+
 	cat >>"$outputFolderPath"/constants.rs <<-EOF
 		include!("constants/POBJ_FLAG.rs");
 		include!("constants/POBJ_XALLOC.rs");

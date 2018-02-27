@@ -2,5 +2,5 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-pub const RPMEM_POOL_HDR_SIG_LEN: c_uint = 8;
-pub const RPMEM_POOL_HDR_UUID_LEN: c_uint = 16;
+pub const RPMEM_POOL_HDR_SIG_LEN: u32 = 8;
+pub const RPMEM_POOL_HDR_UUID_LEN: u32 = 16;

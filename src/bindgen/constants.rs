@@ -16,6 +16,7 @@ include!("constants/RPMEM.rs");
 include!("constants/RPMEM_POOL_HDR.rs");
 include!("constants/RPMEM_POOL_USER.rs");
 include!("constants/RPMEM_REMOVE.rs");
+include!("constants/miscellany.rs");
 include!("constants/POBJ_FLAG.rs");
 include!("constants/POBJ_XALLOC.rs");
 include!("constants/POBJ_XADD.rs");

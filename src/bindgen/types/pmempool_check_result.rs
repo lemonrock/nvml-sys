@@ -2,27 +2,4 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-#[repr(C)]
-#[derive(Copy)]
-pub union PMEMrwlock
-{
-    pub align: c_longlong,
-    pub padding: [c_char; 64usize],
-    _bindgen_union_align: [u64; 8usize],
-}
-
-impl Clone for PMEMrwlock
-{
-	fn clone(&self) -> Self
-	{
-		*self
-	}
-}
-
-impl Default for PMEMrwlock
-{
-	fn default() -> Self
-	{
-		unsafe { zeroed() }
-	}
-}
+pub type pmempool_check_result = u32;

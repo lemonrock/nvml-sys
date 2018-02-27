@@ -3,20 +3,11 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct pmempool_check_statusU__bindgen_ty_1
 {
 	pub msg: *const c_char,
 	pub answer: *const c_char,
-}
-
-impl Clone for pmempool_check_statusU__bindgen_ty_1
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
 }
 
 impl Default for pmempool_check_statusU__bindgen_ty_1
@@ -25,15 +16,6 @@ impl Default for pmempool_check_statusU__bindgen_ty_1
 	fn default() -> Self
 	{
 		unsafe { zeroed() }
-	}
-}
-
-impl Clone for pmempool_check_statusU
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
 	}
 }
 

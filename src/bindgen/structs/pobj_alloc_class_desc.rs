@@ -3,22 +3,12 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy)]
 pub struct pobj_alloc_class_desc
 {
 	pub unit_size: usize,
 	pub units_per_block: c_uint,
 	pub header_type: pobj_header_type,
 	pub class_id: c_uint,
-}
-
-impl Clone for pobj_alloc_class_desc
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
 }
 
 impl Default for pobj_alloc_class_desc

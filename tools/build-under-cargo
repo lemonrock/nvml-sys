@@ -82,7 +82,7 @@ _program_path_find()
 build_under_cargo_fail()
 {
 	local message="$1"
-	
+
 	printf 'build-under-cargo:FAIL:%s\n' "$message" 1>&2
 	exit 1
 }
@@ -96,20 +96,20 @@ _build_under_cargo_reRunIfChanged_print()
 _build_under_cargo_reRunIfChanged()
 {
 	local folderOrFilePath="$1"
-	
+
 	case "$folderOrFilePath" in
-		
+
 		*/temporary/*)
 			return 0
 		;;
-	
+
 	esac
-	
+
 	if [ -f "$folderOrFilePath" ]; then
 		_build_under_cargo_reRunIfChanged_print "$folderOrFilePath"
 	elif [ -d "$folderOrFilePath" ]; then
 		_build_under_cargo_reRunIfChanged_print "$folderOrFilePath"
-		
+
 		local child
 		set +f
 		for child in "$folderOrFilePath"/*
@@ -134,7 +134,7 @@ build_under_cargo_reRunIfAnyChanged()
 				_build_under_cargo_reRunIfChanged_print "$folderOrFilePath"
 			fi
 		done
-		
+
 	cd - 1>/dev/null 2>/dev/null
 }
 
@@ -145,7 +145,7 @@ build_under_cargo_determinePmdkRootFolderPath()
 	else
 		pmdkRootFolderPath="$OUT_DIR"/root
 	fi
-	
+
 	if [ ! -d "$pmdkRootFolderPath" ]; then
 		needsCompilation='true'
 	fi
@@ -162,13 +162,13 @@ build_under_cargo_compileIfRequired()
 build_under_cargo_generatingRustBindingsToPmdkIfRquired()
 {
 	local rebuildBindings='false'
-	
+
 	if [ ! -d "$rustBindingsFolderPath" ]; then
 		rebuildBindings='true'
 	elif ! diff "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath" "$pmdkIncludeFolderPath" 1>/dev/null 2>/dev/null; then
 		rebuildBindings='true'
 	fi
-	
+
 	if $rebuildBindings; then
 		rm -rf "$rustBindingsFolderPath"
 		"$CARGO_MANIFEST_DIR"/tools/bindgen-wrapper/bindgen-wrapper
@@ -193,10 +193,10 @@ build_under_cargo_outputCargoKeyValuePairs()
 	#printf 'cargo:rustc-link-lib=static-nobundle=librpmem\n'
 	#printf 'cargo:rustc-link-lib=static-nobundle=libvmem\n'
 	#printf 'cargo:rustc-link-lib=static-nobundle=libvmemmalloc\n'
-	
+
 	# Search path
 	printf 'cargo:rustc-link-search=native=%s\n' "$pmdkLibFolderPath"
-	
+
 	# Not used by us, but useful for downstream potentially
 	printf 'cargo:root=%s\n' "$pmdkRootFolderPath"
 	printf 'cargo:include=%s\n' "$pmdkIncludeFolderPath"
@@ -204,21 +204,21 @@ build_under_cargo_outputCargoKeyValuePairs()
 }
 
 build_under_cargo_steps()
-{	
+{
 	local pmdkRootFolderPath
 	local needsCompilation='false'
 	build_under_cargo_determinePmdkRootFolderPath
-	
+
 	local pmdkLibFolderPath="$pmdkRootFolderPath"/usr/lib
 	local pmdkIncludeFolderPath="$pmdkRootFolderPath"/usr/include
 	local srcFolderPath="$CARGO_MANIFEST_DIR"/src
 	local rustBindingsFolderPath="$srcFolderPath"/bindgen
 	local copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath="$srcFolderPath"/include
-	
+
 	build_under_cargo_compileIfRequired
-	
+
 	build_under_cargo_copyHeadersToKnownLocationForEmbeddedCCodeInRust
-	
+
 	build_under_cargo_generatingRustBindingsToPmdkIfRquired
 
 	build_under_cargo_outputCargoKeyValuePairs
@@ -227,33 +227,33 @@ build_under_cargo_steps()
 build_under_cargo_main()
 {
 	case "$#" in
-		
+
 		0)
 			:
 		;;
-		
+
 		1)
 			case "$1" in
-				
+
 				-h|--help)
 					printf './build-under-cargo\n'
 					printf './build-under-cargo -h|--help\n'
 					exit 0
 				;;
-				
+
 				*)
 					build_under_cargo_fail "Does not take any arguments"
 				;;
-				
+
 			esac
 		;;
-		
+
 		*)
 			build_under_cargo_fail "Does not take any arguments"
 		;;
-		
+
 	esac
-	
+
 	if [ -n "${CARGO_MANIFEST_DIR+set}" ]; then
 		printf 'build-under-cargo:%s\n' "Building with CARGO_MANIFEST_DIR '$CARGO_MANIFEST_DIR'" 1>&2
 	else
@@ -261,11 +261,11 @@ build_under_cargo_main()
 		cd "$programPath"/.. 1>/dev/null 2>/dev/null
 			local homeFolder="$(pwd)"
 		cd - 1>/dev/null 2>/dev/null
-		
+
 		printf 'build-under-cargo:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$homeFolder'" 1>&2
 		export CARGO_MANIFEST_DIR="$homeFolder"
 	fi
-	
+
 	build_under_cargo_steps
 }
 

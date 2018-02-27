@@ -2,7 +2,7 @@
 // Copyright © 2016 The developers of nvml-sys. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/nvml-sys/master/COPYRIGHT.
 
 
-pub const POBJ_LIST_DEST_AFTER: c_uint = 0;
-pub const POBJ_LIST_DEST_BEFORE: c_uint = 1;
-pub const POBJ_LIST_DEST_HEAD: c_uint = 1;
-pub const POBJ_LIST_DEST_TAIL: c_uint = 0;
+pub const POBJ_LIST_DEST_AFTER: u32 = 0;
+pub const POBJ_LIST_DEST_BEFORE: u32 = 1;
+pub const POBJ_LIST_DEST_HEAD: u32 = 1;
+pub const POBJ_LIST_DEST_TAIL: u32 = 0;

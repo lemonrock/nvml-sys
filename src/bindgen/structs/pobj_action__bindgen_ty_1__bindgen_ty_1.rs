@@ -3,19 +3,9 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy)]
 pub struct pobj_action__bindgen_ty_1__bindgen_ty_1
 {
 	pub offset: u64,
-}
-
-impl Clone for pobj_action__bindgen_ty_1__bindgen_ty_1
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
 }
 
 impl Default for pobj_action__bindgen_ty_1__bindgen_ty_1
@@ -27,30 +17,12 @@ impl Default for pobj_action__bindgen_ty_1__bindgen_ty_1
 	}
 }
 
-impl Clone for pobj_action__bindgen_ty_1
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
-	}
-}
-
 impl Default for pobj_action__bindgen_ty_1
 {
 	#[inline(always)]
 	fn default() -> Self
 	{
 		unsafe { zeroed() }
-	}
-}
-
-impl Clone for pobj_action
-{
-	#[inline(always)]
-	fn clone(&self) -> Self
-	{
-		*self
 	}
 }
 
