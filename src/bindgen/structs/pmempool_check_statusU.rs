@@ -3,7 +3,7 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct pmempool_check_statusU
 {
 	pub type_: pmempool_check_msg_type,

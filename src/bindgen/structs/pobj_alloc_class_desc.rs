@@ -19,3 +19,12 @@ impl Default for pobj_alloc_class_desc
 		unsafe { zeroed() }
 	}
 }
+
+impl Debug for pobj_alloc_class_desc
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "pobj_alloc_class_desc {{ header_type: {:?} }}", self.header_type)
+	}
+}

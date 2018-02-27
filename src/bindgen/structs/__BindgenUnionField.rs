@@ -55,15 +55,15 @@ impl<T> Debug for __BindgenUnionField<T>
 	}
 }
 
-impl<T> ::core::hash::Hash for __BindgenUnionField<T>
+impl<T> ::std::hash::Hash for __BindgenUnionField<T>
 {
 	#[inline(always)]
-	fn hash<H: ::core::hash::Hasher>(&self, _state: &mut H)
+	fn hash<H: ::std::hash::Hasher>(&self, _state: &mut H)
 	{
 	}
 }
 
-impl<T> ::core::cmp::PartialEq for __BindgenUnionField<T>
+impl<T> ::std::cmp::PartialEq for __BindgenUnionField<T>
 {
 	#[inline(always)]
 	fn eq(&self, _other: &__BindgenUnionField<T>) -> bool
@@ -72,6 +72,6 @@ impl<T> ::core::cmp::PartialEq for __BindgenUnionField<T>
 	}
 }
 
-impl<T> ::core::cmp::Eq for __BindgenUnionField<T>
+impl<T> ::std::cmp::Eq for __BindgenUnionField<T>
 {
 }

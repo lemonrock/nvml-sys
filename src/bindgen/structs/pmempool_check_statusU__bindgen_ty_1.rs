@@ -3,7 +3,7 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
 pub struct pmempool_check_statusU__bindgen_ty_1
 {
 	pub msg: *const c_char,

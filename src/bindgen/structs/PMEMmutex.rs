@@ -18,3 +18,12 @@ impl Default for PMEMmutex
 		unsafe { zeroed() }
 	}
 }
+
+impl Debug for PMEMmutex
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "PMEMmutex {{ union }}")
+	}
+}

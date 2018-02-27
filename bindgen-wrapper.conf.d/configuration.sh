@@ -103,4 +103,7 @@ final_chance_to_tweak()
 		include!("constants/PMEMOBJ_MIN.rs");
 		include!("constants/PMEMLOG_MIN.rs");
 	EOF
+
+	# As of bindgen 0.33.1, #[derive(Copy, Clone)] doesn't seem to always be derived
+	sed -i -e 's/pub struct pmemoid/#[derive(Copy, Clone)]\npub struct pmemoid/g' "$outputFolderPath"/structs/pmemoid.rs
 }

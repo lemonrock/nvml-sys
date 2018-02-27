@@ -4,7 +4,6 @@
 
 #![allow(non_camel_case_types)]
 #![allow(non_upper_case_globals)]
-#![no_std]
 #![feature(static_nobundle)]
 #![feature(untagged_unions)]
 

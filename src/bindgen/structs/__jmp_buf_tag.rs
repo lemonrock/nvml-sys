@@ -18,3 +18,12 @@ impl Default for __jmp_buf_tag
 		unsafe { zeroed() }
 	}
 }
+
+impl Debug for __jmp_buf_tag
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "__jmp_buf_tag {{  }}")
+	}
+}

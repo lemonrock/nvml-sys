@@ -17,6 +17,15 @@ impl Default for pobj_action__bindgen_ty_1__bindgen_ty_1
 	}
 }
 
+impl Debug for pobj_action__bindgen_ty_1__bindgen_ty_1
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "pobj_action__bindgen_ty_1__bindgen_ty_1 {{  }}")
+	}
+}
+
 impl Default for pobj_action__bindgen_ty_1
 {
 	#[inline(always)]
@@ -26,11 +35,29 @@ impl Default for pobj_action__bindgen_ty_1
 	}
 }
 
+impl Debug for pobj_action__bindgen_ty_1
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "pobj_action__bindgen_ty_1 {{ union }}")
+	}
+}
+
 impl Default for pobj_action
 {
 	#[inline(always)]
 	fn default() -> Self
 	{
 		unsafe { zeroed() }
+	}
+}
+
+impl Debug for pobj_action
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "pobj_action {{ type: {:?}, data: {:?}, __bindgen_anon_1: {:?} }}", self.type_, self.data, self.__bindgen_anon_1)
 	}
 }

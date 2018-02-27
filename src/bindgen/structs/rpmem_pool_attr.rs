@@ -25,3 +25,12 @@ impl Default for rpmem_pool_attr
 		unsafe { zeroed() }
 	}
 }
+
+impl Debug for rpmem_pool_attr
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "rpmem_pool_attr {{ signature: {:?}, poolset_uuid: {:?}, uuid: {:?}, next_uuid: {:?}, prev_uuid: {:?}, user_flags: {:?} }}", self.signature, self.poolset_uuid, self.uuid, self.next_uuid, self.prev_uuid, self.user_flags)
+	}
+}

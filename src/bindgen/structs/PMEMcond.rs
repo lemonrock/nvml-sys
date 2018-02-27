@@ -18,3 +18,12 @@ impl Default for PMEMcond
 		unsafe { zeroed() }
 	}
 }
+
+impl Debug for PMEMcond
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "PMEMcond {{ union }}")
+	}
+}

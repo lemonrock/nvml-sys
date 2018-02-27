@@ -18,3 +18,12 @@ impl Default for PMEMrwlock
 		unsafe { zeroed() }
 	}
 }
+
+impl Debug for PMEMrwlock
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "PMEMrwlock {{ union }}")
+	}
+}

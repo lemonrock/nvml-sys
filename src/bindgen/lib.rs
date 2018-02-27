@@ -6,16 +6,16 @@
 extern crate libc;
 
 
-use ::core::clone::Clone;
-use ::core::default::Default;
-use ::core::fmt::Debug;
-use ::core::fmt::Formatter;
-use ::core::fmt::Result;
-use ::core::marker::Copy;
-use ::core::marker::PhantomData;
-use ::core::mem::transmute;
-use ::core::mem::zeroed;
-use ::core::option::Option;
+use ::std::clone::Clone;
+use ::std::default::Default;
+use ::std::fmt::Debug;
+use ::std::fmt::Formatter;
+use ::std::fmt::Result;
+use ::std::marker::Copy;
+use ::std::marker::PhantomData;
+use ::std::mem::transmute;
+use ::std::mem::zeroed;
+use ::std::option::Option;
 use ::libc::c_char;
 use ::libc::c_int;
 use ::libc::c_longlong;

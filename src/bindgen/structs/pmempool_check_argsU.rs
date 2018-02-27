@@ -19,3 +19,12 @@ impl Default for pmempool_check_argsU
 		unsafe { zeroed() }
 	}
 }
+
+impl Debug for pmempool_check_argsU
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "pmempool_check_argsU {{ path: {:?}, backup_path: {:?}, pool_type: {:?} }}", self.path, self.backup_path, self.pool_type)
+	}
+}

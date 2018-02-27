@@ -3,6 +3,7 @@
 
 
 #[repr(C)]
+#[derive(Copy, Clone)]
 pub struct pmemoid
 {
 	pub pool_uuid_lo: u64,
@@ -15,5 +16,14 @@ impl Default for pmemoid
 	fn default() -> Self
 	{
 		unsafe { zeroed() }
+	}
+}
+
+impl Debug for pmemoid
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "pmemoid {{  }}")
 	}
 }
