@@ -7,16 +7,19 @@ pub struct __BindgenUnionField<T>(PhantomData<T>);
 
 impl<T> __BindgenUnionField<T>
 {
+	
 	#[inline(always)]
 	pub fn new() -> Self
 	{
 		__BindgenUnionField(PhantomData)
 	}
+	
 	#[inline(always)]
 	pub unsafe fn as_ref(&self) -> &T
 	{
 		transmute(self)
 	}
+	
 	#[inline(always)]
 	pub unsafe fn as_mut(&mut self) -> &mut T
 	{
@@ -26,6 +29,7 @@ impl<T> __BindgenUnionField<T>
 
 impl<T> Default for __BindgenUnionField<T>
 {
+	
 	#[inline(always)]
 	fn default() -> Self
 	{
@@ -35,6 +39,7 @@ impl<T> Default for __BindgenUnionField<T>
 
 impl<T> Clone for __BindgenUnionField<T>
 {
+	
 	#[inline(always)]
 	fn clone(&self) -> Self
 	{
