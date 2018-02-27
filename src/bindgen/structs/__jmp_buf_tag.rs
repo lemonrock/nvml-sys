@@ -3,6 +3,7 @@
 
 
 #[repr(C)]
+#[derive(Copy, Clone)]
 pub struct __jmp_buf_tag
 {
 	pub __jb: __jmp_buf,

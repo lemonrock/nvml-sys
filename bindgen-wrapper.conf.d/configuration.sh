@@ -104,6 +104,12 @@ final_chance_to_tweak()
 		include!("constants/PMEMLOG_MIN.rs");
 	EOF
 
-	# As of bindgen 0.33.1, #[derive(Copy, Clone)] doesn't seem to always be derived
-	sed -i -e 's/pub struct pmemoid/#[derive(Copy, Clone)]\npub struct pmemoid/g' "$outputFolderPath"/structs/pmemoid.rs
+	# As of bindgen 0.33.1, #[derive(Copy, Clone)] doesn't seem to always be derived.
+	local derive_copy_and_clone
+	for derive_copy_and_clone in \
+		'__jmp_buf_tag' \
+		'pmemoid'
+	do
+		sed -i -e "s/pub struct ${derive_copy_and_clone}/#[derive(Copy, Clone)]\npub struct ${derive_copy_and_clone}/g" "$outputFolderPath"/structs/"$derive_copy_and_clone".rs
+	done
 }
